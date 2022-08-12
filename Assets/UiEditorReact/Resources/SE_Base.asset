@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b61659c593a4ec43ad4b037d585f81b, type: 3}
+  m_Name: SE_Base
+  m_EditorClassIdentifier: 
+  checkboxComponent: {fileID: -6995063401201776317, guid: ae40485bcb4548d44b0c4f74155fe788, type: 3}
+  inputComponent: {fileID: 2653567131553773910, guid: 7b1bf6f5e42fac64b84e44b2f670e8c7, type: 3}
+  inputVector2: {fileID: 8557426165978139198, guid: 336f017b7af5c4a4ca2ec7959e3ba5b1, type: 3}
+  dropdownComponent: {fileID: 8316315918540227856, guid: f23b574054992dc45a5e1e51411225b4, type: 3}
+  rowComponent: {fileID: 382779915377898524, guid: 7040f94cfff18964583a7a0776c4f0ce, type: 3}
+  windowSelectBigCanvasPrefab: {fileID: 2609621690086277629, guid: 1445ba0d552ff2540910c597b999c89d, type: 3}
+  inputBigSelect: {fileID: 7329898925521021634, guid: 854c69157ff766c49830aeca8ae97df7, type: 3}
+  titleComponent: {fileID: 375921821192237719, guid: a0c06ef8ec5d3b44197f1a52c10457e2, type: 3}
+  panelSeController: {fileID: 0}
+  canvasEditor: {fileID: 0}
+  tabRow_SE: {fileID: 3394783835679047167, guid: 48279b62ad58eab4e879471cc02bd006, type: 3}
+  elementTabRow_SE: {fileID: 1351837976198895683, guid: 6efe01ec6d775294dbc465c9426959a7, type: 3}
