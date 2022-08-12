@@ -17,11 +17,12 @@ namespace MCoder.UI
         public void AddNew()
         {
             coderSctipt.EventCreate();
+            Render();
         }
 
         public void SelectEvent(int N)
         {
-            coderSctipt.EventSelect(2);
+            coderSctipt.EventSelect(N);
             for (int i = 0; i < container.childCount; i++)
             {
                 container.GetChild(i).transform.Find("_active").gameObject.SetActive(i == N);
@@ -32,17 +33,16 @@ namespace MCoder.UI
         {
             SEditor.FormBuilder.ClearAllChildren(container);
 
-            int L = 0;
+            int L = -1;
             foreach (var lgn in coderSctipt.mC_BaseInstance.nodesForEvents)
-            {
-
-                L++;
-
+            { 
+                L++; 
                 MC_Event_Element go = Instantiate(elementPrefab.gameObject, container).GetComponent<MC_Event_Element>();
                 go.eventClass = lgn.myEvent;
                 go.nodeLine = L;
                 go.callbackPanel = this; 
                 go.Render();
+                go.transform.Find("_active").gameObject.SetActive(L==coderSctipt.currentEventNumber);
 
             }
 

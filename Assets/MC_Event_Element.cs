@@ -9,6 +9,7 @@ using TMPro;
 using UnityEngine.EventSystems;
 using SEditor;
 using MCoder.Libary;
+using UnityEngine.UI;
 
 public class MC_Event_Element : MonoBehaviour
 {
@@ -19,9 +20,14 @@ public class MC_Event_Element : MonoBehaviour
     internal MC_Base_Event eventClass;
 
     // Start is called before the first frame update
+    public void Click()
+    {
+        callbackPanel.SelectEvent(nodeLine); 
+
+    }
     void Start()
     {
-        
+        GetComponent<Button>().onClick.AddListener(Click);
     }
 
     // Update is called once per frame

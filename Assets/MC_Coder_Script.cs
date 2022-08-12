@@ -79,6 +79,8 @@ namespace MCoder.UI
 
             int padding = 0;
 
+            Debug.Log("currentEventNumber: " + currentEventNumber);
+
 
             int L = 0;
             foreach (MC_BaseNodeElement lgn in mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes)
