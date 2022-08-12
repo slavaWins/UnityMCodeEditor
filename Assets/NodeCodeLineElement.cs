@@ -14,7 +14,7 @@ namespace MCoder.UI
         public List<TMP_InputField> argumentsInputsList;
         public GameObject argumentInput;
         internal MC_BaseNodeElement nodeClass;
-        internal CoderMNodePanel callbackPanel;
+        internal MC_Coder_Script callbackPanel;
          
 
         public int lineNumber;

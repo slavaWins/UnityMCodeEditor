@@ -53,15 +53,20 @@ namespace MCoder.UI
 
 
 
+        internal virtual void OnDragStop()
+        {
+
+        }
+
         internal virtual void OnMoveExitInTargetClass()
         {
-            Debug.Log("Я ушел с нужного класса");
+         //   Debug.Log("Я ушел с нужного класса");
         }
 
         internal virtual void OnMoveUpdateInTargetClass()
         {
-            Debug.Log("Я пролетел над нужным классом");
-            Debug.Log(targetDropClass);
+         //  Debug.Log("Я пролетел над нужным классом");
+          //  Debug.Log(targetDropClass);
         }
 
 
@@ -102,6 +107,8 @@ namespace MCoder.UI
                 }
             }
 
+           
+
             if (targetDropClass != null)
             {
                 OnMoveExitInTargetClass();
@@ -114,19 +121,21 @@ namespace MCoder.UI
 
         public virtual void DragEndTRargetClass()
         {
-            Debug.Log("Дропнуто в нужный класс"); 
-            Debug.Log(targetDropClass); 
+           // Debug.Log("Дропнуто в нужный класс"); 
+           // Debug.Log(targetDropClass); 
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-           // Debug.Log("OnEndDrag");
+            // Debug.Log("OnEndDrag");
             /*
             Debug.Log(eventData.lastPress);
             Debug.Log(eventData.pointerClick);
             Debug.Log(eventData.pointerDrag);
             Debug.Log(eventData.pointerCurrentRaycast);
             */
+            OnDragStop();
+
             Destroy(myGhostDragibleCline.gameObject);
 
             if (targetDropClass != null)

@@ -7,7 +7,7 @@ namespace MCoder.UI
 {
     public class NodeLibaryPanel : MonoBehaviour
     {
-        public CoderMNodePanel coderMNodePanel;
+        public MC_Coder_Script coderMNodePanel;
         public Transform container;
         public LibaryElement element;
 

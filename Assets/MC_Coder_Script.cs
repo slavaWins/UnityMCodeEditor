@@ -3,18 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using MCoder;
-
-
+using System;
 
 namespace MCoder.UI
 {
 
-    public class CoderMNodePanel : MonoBehaviour
+    public class MC_Coder_Script : MonoBehaviour
     {
-        public Transform container ;
-        public  NodeCodeLineElement elementPrefab;
-      
+        public Transform container;
+        public NodeCodeLineElement elementPrefab;
+        public int currentEventNumber = 0;
+
         public List<NodeCodeLineElement> Nodes = new List<NodeCodeLineElement>();
+
+        internal void EventCreate()
+        {
+            mC_BaseInstance.nodesForEvents.Add(new MC_NodeEventModule(BodyTypeEnum.block));
+        }
+
+
+        internal void EventSelect(int Line)
+        {
+            currentEventNumber = Line;
+            Render();
+
+        }
 
         public MC_BaseInstance mC_BaseInstance = new ExampleInstanceDamageIfClick();
 
@@ -24,7 +37,7 @@ namespace MCoder.UI
             List<IMCoder_NodeElement> logicnodes = new List<IMCoder_NodeElement>();
 
             int L = 0;
-            foreach (MC_BaseNodeElement lgn in mC_BaseInstance.nodesForEvents[0].logicnodes)
+            foreach (MC_BaseNodeElement lgn in mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes)
             {
                 L++;
                 logicnodes.Add(lgn);
@@ -33,8 +46,8 @@ namespace MCoder.UI
                     logicnodes.Add(myClass);
                 }
             }
-            mC_BaseInstance.nodesForEvents[0].logicnodes.Clear();
-            mC_BaseInstance.nodesForEvents[0].logicnodes = logicnodes;
+            mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes.Clear();
+            mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes = logicnodes;
             Render();
         }
 
@@ -67,28 +80,28 @@ namespace MCoder.UI
             int padding = 0;
 
 
-            NodeCodeLineElement go = null;
             int L = 0;
-            foreach (MC_BaseNodeElement lgn in mC_BaseInstance.nodesForEvents[0].logicnodes)
+            foreach (MC_BaseNodeElement lgn in mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes)
             {
                 L++;
 
-                go = Instantiate(elementPrefab.gameObject, container).GetComponent<NodeCodeLineElement>();
+                NodeCodeLineElement go = Instantiate(elementPrefab.gameObject, container).GetComponent<NodeCodeLineElement>();
                 go.lineNumber = L;
                 go.nodeClass = lgn;
                 go.callbackPanel = this;
                 if (lgn.isType_END()) padding -= 1;
                 go.SetPadding(padding);
                 go.Render();
-                if (lgn.isType_IF()) padding += 1; 
+                if (lgn.isType_IF()) padding += 1;
             }
 
-            if (go != null)
-            {
-                go.transform.SetParent(null);
-            }
+            StartCoroutine(container.GetComponent<VerticalLayoutGroup>().ChangeUpdate());
 
         }
+
+
+
+
 
         void Start()
         {
@@ -102,4 +115,19 @@ namespace MCoder.UI
         }
     }
 
+    public static class LayoutHelper
+    {
+        public static IEnumerator ChangeUpdate(this VerticalLayoutGroup horizLayoutGroup)
+        {
+
+            //horizLayoutGroup.enabled = false;
+            yield return new WaitForEndOfFrame();
+            // horizLayoutGroup.enabled = true; 
+            horizLayoutGroup.CalculateLayoutInputHorizontal();
+            horizLayoutGroup.CalculateLayoutInputVertical();
+            horizLayoutGroup.SetLayoutHorizontal();
+            horizLayoutGroup.SetLayoutVertical();
+            yield return null;
+        }
+    }
 }
