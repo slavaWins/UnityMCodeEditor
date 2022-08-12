@@ -9,6 +9,7 @@ namespace MCoder.Libary
 
     public class MC_Base_Event 
     {
+
         public List<MC_Argument> arguments = new List<MC_Argument>();
         public List<object> values = new List<object>();
 
@@ -18,9 +19,15 @@ namespace MCoder.Libary
         public string title { get; set; }
         public string descr { get; set; }
 
+        public string GetEventInd()
+        {
+         
+
+            return this.GetType().ToString();
+        }
         public virtual bool CallEvent(string _ind, object arg0=null, object arg1 = null)
         {
-            if ((this.GetType().ToString() != _ind)) return false;
+            if ((GetEventInd() != _ind)) return false;
 
             values[0] = arg0;
             values[1] = arg1;

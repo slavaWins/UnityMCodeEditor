@@ -5,9 +5,14 @@ using UnityEngine.UI;
 
 namespace SEditor
 {
+    public interface ITakeValueFromSelector_SE
+    {
+        public void SelectValueFromSelector(string ind);
+    }
+
     public class WindowSelectBigCanvas_SE : MonoBehaviour
     {
-        public inputBigSelect_SE myInputCallback;
+        public ITakeValueFromSelector_SE myInputCallback;
         public ElementWindowSelectBigCanvas templateElement;
         public Transform container;
 
@@ -30,7 +35,7 @@ namespace SEditor
             Close();
         }
 
-        public void Open(inputBigSelect_SE _callback)
+        public void Open(ITakeValueFromSelector_SE _callback)
         {
             Clear();
             myInputCallback = _callback;

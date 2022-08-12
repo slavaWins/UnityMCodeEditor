@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using MCoder;
 using System;
+using MCoder.Libary;
 
 namespace MCoder.UI
 {
@@ -16,9 +17,13 @@ namespace MCoder.UI
 
         public List<NodeCodeLineElement> Nodes = new List<NodeCodeLineElement>();
 
-        internal void EventCreate()
+        internal void EventCreate(MC_Base_Event plusEvent)
         {
-            mC_BaseInstance.nodesForEvents.Add(new MC_NodeEventModule(BodyTypeEnum.block));
+            MC_Base_Event _eventNewFromClass = (MC_Base_Event)Activator.CreateInstance(plusEvent.GetType());
+            MC_NodeEventModule module = new MC_NodeEventModule(BodyTypeEnum.block);
+            module.myEvent = _eventNewFromClass;
+
+            mC_BaseInstance.nodesForEvents.Add(module);
         }
 
 
@@ -35,6 +40,8 @@ namespace MCoder.UI
         public void AddLine(MC_BaseNodeElement myClass, int postLine)
         {
             List<IMCoder_NodeElement> logicnodes = new List<IMCoder_NodeElement>();
+
+            if (postLine == -1) logicnodes.Add(myClass);
 
             int L = 0;
             foreach (MC_BaseNodeElement lgn in mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes)

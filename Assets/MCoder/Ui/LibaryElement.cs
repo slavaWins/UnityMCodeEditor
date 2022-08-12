@@ -45,6 +45,25 @@ namespace MCoder.UI
             myGhostDragibleCline.sizeDelta = gameObject.GetComponent<RectTransform>().sizeDelta / 2;
         }
 
+
+
+        bool OnMoveUpdateInAny_Check(GameObject go)
+        {
+            if (go.transform.parent.parent != coderMNodePanel.transform) return false;
+
+            if (addHere == null) addHere = Instantiate(addHerePrefab);
+            addHere.transform.SetParent(coderMNodePanel.container);
+            addHere.transform.SetAsFirstSibling();
+            return true;
+        }
+
+        //Превью в начеле контейнера
+        internal override void OnMoveUpdateInAny(GameObject go)
+        {
+            OnMoveUpdateInAny_Check(go);
+
+        }
+
         internal override void OnMoveUpdateInTargetClass()
         {
             base.OnMoveUpdateInTargetClass();
@@ -67,12 +86,24 @@ namespace MCoder.UI
             }
         }
 
-        public override void DragEndTRargetClass()
+        public override void DragEnd_TargetClass()
         {
-            base.DragEndTRargetClass();
+            base.DragEnd_TargetClass();
             NodeAddToCode(targetDropClass.lineNumber);
 
             if (addHere != null) Destroy(addHere);
+        }
+
+        public override void DragEnd_UnTargetClass(GameObject gameObject)
+        {
+            
+            if (OnMoveUpdateInAny_Check(gameObject))
+            {
+
+                NodeAddToCode(-1);
+
+                if (addHere != null) Destroy(addHere);
+            }
         }
 
         internal override void OnDragStop()
@@ -84,9 +115,9 @@ namespace MCoder.UI
 
         public void NodeAddToCode(int linePos)
         {
-            Debug.Log(coderMNodePanel);
-            Debug.Log(nodeClass);
-            Debug.Log(linePos);
+            //Debug.Log(coderMNodePanel);
+           // Debug.Log(nodeClass);
+           // Debug.Log(linePos);
             coderMNodePanel.AddLine(nodeClass, linePos);
         }
        

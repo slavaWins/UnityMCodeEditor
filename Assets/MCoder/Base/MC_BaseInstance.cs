@@ -24,6 +24,15 @@ namespace MCoder
         public List<MC_NodeEventModule> nodesForEvents = new List<MC_NodeEventModule>();
 
 
+        public bool IssetEvent(string eventInd)
+        {
+            foreach (MC_NodeEventModule moduleNode in nodesForEvents)
+            {
+                if (moduleNode.myEvent.GetEventInd() == eventInd) return true;
+            }
+            return false;
+        }
+
         /// <summary>Вызываем какое-то событие, например Клик. И из списка nodesForEvents если есть клик, выполнится набор нодов </summary>
         public void CallEvent(string eventInd, object arg0 = null, object arg1 = null)
         {

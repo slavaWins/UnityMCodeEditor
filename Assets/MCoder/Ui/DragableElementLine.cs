@@ -63,6 +63,11 @@ namespace MCoder.UI
          //   Debug.Log("Я ушел с нужного класса");
         }
 
+        /// <summary>Тащем объект по какому-то другому объекту, который не таргет</summary>
+        internal virtual void OnMoveUpdateInAny(GameObject go)
+        {
+
+        }
         internal virtual void OnMoveUpdateInTargetClass()
         {
          //  Debug.Log("Я пролетел над нужным классом");
@@ -102,6 +107,7 @@ namespace MCoder.UI
                     }
 
                     targetDropClass = _newTarget;
+                   
                     OnMoveUpdateInTargetClass(); 
                     return;
                 }
@@ -117,9 +123,16 @@ namespace MCoder.UI
                 targetDropClass = null;
             }
 
+            OnMoveUpdateInAny(eventData.pointerCurrentRaycast.gameObject);
+
         }
 
-        public virtual void DragEndTRargetClass()
+        public virtual void DragEnd_UnTargetClass(GameObject gameObject)
+        {
+
+        }
+
+        public virtual void DragEnd_TargetClass()
         {
            // Debug.Log("Дропнуто в нужный класс"); 
            // Debug.Log(targetDropClass); 
@@ -140,7 +153,11 @@ namespace MCoder.UI
 
             if (targetDropClass != null)
             {  
-                DragEndTRargetClass();
+                DragEnd_TargetClass();
+            }
+            else
+            { 
+                DragEnd_UnTargetClass(eventData.pointerCurrentRaycast.gameObject);
             }
             /*
             if (addHere != null)

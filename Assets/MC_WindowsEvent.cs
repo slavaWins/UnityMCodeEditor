@@ -1,3 +1,5 @@
+using MCoder.Libary;
+using SEditor;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +8,7 @@ using UnityEngine.UI;
 namespace MCoder.UI
 {
 
-    public class MC_WindowsEvent : MonoBehaviour
+    public class MC_WindowsEvent : MonoBehaviour, ITakeValueFromSelector_SE
     {
         public MC_Coder_Script coderSctipt;
         public Transform container;
@@ -16,8 +18,17 @@ namespace MCoder.UI
 
         public void AddNew()
         {
-            coderSctipt.EventCreate();
-            Render();
+            BaseDataSE baseDataSE = BaseDataSE.Get();
+            baseDataSE.GetWindowSeletor().Open(this);
+
+
+            foreach (MC_Base_Event item in MC_BD_Nodes.GetEventsList())
+            {
+                if (coderSctipt.mC_BaseInstance.IssetEvent(item.GetEventInd())) continue;
+                baseDataSE.GetWindowSeletor().AddElement(item.GetEventInd(), null);
+            } 
+
+             
         }
 
         public void SelectEvent(int N)
@@ -42,10 +53,11 @@ namespace MCoder.UI
                 go.nodeLine = L;
                 go.callbackPanel = this; 
                 go.Render();
-                go.transform.Find("_active").gameObject.SetActive(L==coderSctipt.currentEventNumber);
-
+                go.transform.Find("_active").gameObject.SetActive(L==coderSctipt.currentEventNumber); 
             }
 
+
+           
 
             StartCoroutine(container.GetComponent<VerticalLayoutGroup>().ChangeUpdate());
         }
@@ -59,6 +71,23 @@ namespace MCoder.UI
         // Update is called once per frame
         void Update()
         {
+
+        }
+
+        public void SelectValueFromSelector(string ind)
+        {
+
+            foreach (MC_Base_Event item in MC_BD_Nodes.GetEventsList())
+            {
+                if (item.GetEventInd() != ind) continue;
+                if (coderSctipt.mC_BaseInstance.IssetEvent(item.GetEventInd())) continue;
+                coderSctipt.EventCreate(item);
+                Render();
+                return;
+            }
+
+
+
 
         }
     }

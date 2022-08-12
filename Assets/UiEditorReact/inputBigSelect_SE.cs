@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace SEditor
 {
-    public class inputBigSelect_SE : Component_SE<string>, IInputComponent
+    public class inputBigSelect_SE : Component_SE<string>, IInputComponent, ITakeValueFromSelector_SE
     {
 
 
