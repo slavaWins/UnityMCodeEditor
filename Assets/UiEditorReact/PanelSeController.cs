@@ -75,6 +75,7 @@ namespace SEditor
 
             if (canvas == null) return;
 
+            if (resizerGO == null) return;
 
             if (eventData.pointerPressRaycast.gameObject == resizerGO.gameObject)
             {

@@ -13,6 +13,25 @@ namespace MCoder
     {
 
 
+        public static MC_BaseNodeElement GetLineByInd(string ind)
+        {
+            foreach (MC_BaseNodeElement item in GetAllNodesList())
+            {
+                if (item.GetType().ToString() == ind) return item;
+            }
+            return null;
+        }
+
+
+        //Создает НОВЫЙ класс по инд
+        public static MC_Base_Event GetEventByInd(string ind)
+        {
+            foreach (MC_Base_Event item in GetEventsList())
+            {
+                if (item.GetEventInd() == ind) return item;
+            }
+            return null;
+        }
 
         public static List<MC_Base_Event> GetEventsList()
         {

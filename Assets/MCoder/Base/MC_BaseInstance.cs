@@ -7,6 +7,91 @@ using MCoder.Libary;
 
 namespace MCoder
 {
+    public class MC_Save_EventModule_Node
+    {
+        public string ind;
+        public List<object> values = new List<object>();
+    }
+
+    public class MC_Save_EventModule
+    {
+        
+        public List<MC_Save_EventModule_Node> nodes = new List<MC_Save_EventModule_Node>();
+    }
+
+    public class MC_Save_Instance
+    { 
+        public Dictionary<string, MC_Save_EventModule> nodesForEvents;
+
+    }
+
+    public static class MCoderExport
+    {
+        public static bool SetData(this MC_BaseInstance self, MC_Save_Instance toData)
+        {
+
+
+            foreach (var modulesSave in toData.nodesForEvents)
+            {
+                MC_NodeEventModule moduleNode = new MC_NodeEventModule(BodyTypeEnum.block);
+                moduleNode.myEvent = MC_BD_Nodes.GetEventByInd(modulesSave.Key);
+
+                if (moduleNode.myEvent == null)
+                {
+                    Debug.Log("Не получилсоь подгрузить евент " + modulesSave.Key);
+                    continue;
+                }
+
+
+                moduleNode.logicnodes = new List<IMCoder_NodeElement>();
+                foreach (MC_Save_EventModule_Node nodesSave in modulesSave.Value.nodes)
+                {
+                    IMCoder_NodeElement node = MC_BD_Nodes.GetLineByInd(nodesSave.ind);
+                    node.values = nodesSave.values;
+                    moduleNode.logicnodes.Add(node);
+                }
+
+
+                self.nodesForEvents.Add(moduleNode);
+
+            }
+
+            return true;
+        }
+
+        public static MC_Save_Instance GetData(this MC_BaseInstance obj)
+        {
+            MC_Save_Instance save = new MC_Save_Instance();
+
+
+            foreach (MC_NodeEventModule moduleNode in obj.nodesForEvents)
+            {
+                MC_Save_EventModule module = new MC_Save_EventModule();
+                
+
+                for (int L = 0; L < moduleNode.logicnodes.Count; L++)
+                {
+
+                    IMCoder_NodeElement lnd = moduleNode.logicnodes[L];
+
+                    MC_Save_EventModule_Node saveNode =  new MC_Save_EventModule_Node();
+                    
+                    saveNode.ind = lnd.GetType().ToString();
+                    saveNode.values = lnd.values;
+
+
+                    module.nodes.Add(saveNode);
+                }
+
+                save.nodesForEvents.Add(moduleNode.myEvent.GetEventInd(), module);
+            }
+
+            return save;
+        }
+
+    }
+
+
 
     /// 
     /// <summary>

@@ -7,8 +7,8 @@ using System.Linq;
 
 namespace MCoder
 {
-     
-     
+
+    
   
 
     public class MC_BaseNodeElement :  IMCoder_Function, IMCoder_NodeElement
@@ -18,8 +18,7 @@ namespace MCoder
         public List<MC_Argument> arguments { get; set; } = new List<MC_Argument>();
         public string name { get; set; } = null;   
         public string iconText { get; set; } = null;   
-        public string descr { get; set; } = null;   
-        public List<string> gavno { get; set; }
+        public string descr { get; set; } = null;    
         public ExampleBody exampleBody { get; set; }
         public BodyTypeEnum bodyType { get; set; }
 

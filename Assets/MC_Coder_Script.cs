@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using MCoder;
+using TMPro;
 using System;
 using MCoder.Libary;
 
@@ -11,6 +12,7 @@ namespace MCoder.UI
 
     public class MC_Coder_Script : MonoBehaviour
     {
+        public TMP_Text errorText;
         public Transform container;
         public NodeCodeLineElement elementPrefab;
         public int currentEventNumber = 0;
@@ -56,6 +58,13 @@ namespace MCoder.UI
             mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes.Clear();
             mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes = logicnodes;
             Render();
+
+            string _val = mC_BaseInstance.Validate();
+            errorText.gameObject.SetActive(_val != null);
+            if (_val != null)
+            {
+                errorText.text = _val;
+            }
         }
 
         /*
