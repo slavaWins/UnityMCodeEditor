@@ -19,6 +19,8 @@ public class MC_VaribleElement : DragableElementLine<UMC_Element_Argument>, ICal
     [HideInInspector]
     public MC_Argument argument;
 
+    [HideInInspector]
+    public MC_Value_LinkType myLinkType;
 
     //Позиция перемнной от нуля. Как аргумент
     public int myId;
@@ -33,8 +35,7 @@ public class MC_VaribleElement : DragableElementLine<UMC_Element_Argument>, ICal
     [Header("Drag")]
     public GameObject addHerePrefab;
     GameObject addHere;
-
-
+     
 
     public void Render()
     {
@@ -100,7 +101,7 @@ public class MC_VaribleElement : DragableElementLine<UMC_Element_Argument>, ICal
     internal override void OnMoveEnterInTargetClass()
     {
         base.OnMoveEnterInTargetClass();
-        Debug.Log("enter");
+       // Debug.Log("enter");
 
         if (targetDropClass.argument == null) return;
         if (addHere == null)
@@ -148,7 +149,7 @@ public class MC_VaribleElement : DragableElementLine<UMC_Element_Argument>, ICal
     {
         if (targetDropClass.argument.myType != argument.myType) return;
 
-        targetDropClass.meValue.linkType = MC_Value_LinkType._event;
+        targetDropClass.meValue.linkType = myLinkType;
         targetDropClass.meValue.linkId = myId;
         //targetDropClass.Render();
         callbackWindow.codeScript.Render();

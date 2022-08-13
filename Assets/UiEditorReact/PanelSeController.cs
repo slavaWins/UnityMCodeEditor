@@ -21,6 +21,8 @@ namespace SEditor
 
         [Header("Внутрянка")]
         public Button btnClose;
+        public Button btnFullScreen;
+        public Button btnCollapse;
         public TMP_Text titleWindow; 
         public Transform container; 
         public Image iconImage; 
@@ -33,8 +35,23 @@ namespace SEditor
         {
             titleWindow.text = val;
         }
+        void MakeCollapse()
+        {
+            SE_ToolbarController.Get().Down(gameObject);
+        }
+
+        void Fullscreen()
+        {
+            RectTransform rt = GetComponent<RectTransform>();
+            rt.anchoredPosition = Vector2.zero;
+            rt.anchorMin = Vector2.zero;
+            rt.anchorMax = Vector2.one;
+            rt.sizeDelta = Vector2.zero; 
+        }
+
         void Close()
         {
+            SE_ToolbarController.Get().Close(gameObject);
             gameObject.SetActive(false);
         }
 
@@ -52,9 +69,13 @@ namespace SEditor
             }
 
 
-            if (btnClose)
+            if (btnClose) btnClose.onClick.AddListener(Close);
+
+            if (SE_ToolbarController.Get() != null)
             {
-                btnClose.onClick.AddListener(Close);
+                if (btnFullScreen) btnFullScreen.onClick.AddListener(Fullscreen);
+                if (btnCollapse) btnCollapse.onClick.AddListener(MakeCollapse);
+                SE_ToolbarController.Get().AddWindow(gameObject, title, myIcon);
             }
         }
 

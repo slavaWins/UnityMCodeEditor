@@ -46,6 +46,7 @@ namespace MCoder
     {
         public List<BodyTypeEnum> supportBodyType { get; set; } = new List<BodyTypeEnum>();
 
+        public MC_NodeEventModule parentModule;
         public MC_BaseInstance mC_BaseInstance;
         public List<MC_Value> values { get; set; } = new List<MC_Value>();
         public List<MC_Argument> arguments { get; set; } = new List<MC_Argument>();
@@ -170,7 +171,7 @@ namespace MCoder
                     {
                         if (mC_BaseInstance.argumentsCustoms[values[i].linkId].myType != arg.myType)
                         {
-                            return new MC_Error("Не сходится тип переменной в  " + arg.name + "").SelectArgument(i);
+                            return new MC_Error("Не сходится тип custom переменной в  " + arg.name + "").SelectArgument(i);
                         }
                     }
 
@@ -178,18 +179,18 @@ namespace MCoder
                     {
                         if (mC_BaseInstance.argumentsInputs[values[i].linkId].myType != arg.myType)
                         {
-                            return new MC_Error("Не сходится тип переменной в  " + arg.name + "").SelectArgument(i);
+                            return new MC_Error("Не сходится тип input переменной в  " + arg.name + "").SelectArgument(i);
                         }
                     }
-                    /*
+                    
                     if (values[i].linkType == MC_Value_LinkType._event)
                     {
-                        if  (mye .argumentsInputs[values[i].linkId].myType != arg.myType)
+                        if  (parentModule.myEvent.arguments[values[i].linkId].myType != arg.myType)
                         {
-                            return new MC_Error("Не сходится тип переменной в  " + arg.name + "").SelectArgument(i);
+                            return new MC_Error("Не сходится тип event переменной в  " + arg.name + ". Приходит " + parentModule.myEvent.arguments[values[i].linkId].myType.ToString()  +" а нужно " + arg.myType).SelectArgument(i);
                         }
                     }
-                    */
+                    
 
                     if (arg.myType == MC_ArgumentTypeEnum._int)
                     {

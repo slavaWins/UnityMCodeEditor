@@ -241,7 +241,9 @@ namespace MCoder
 
 
                     j++;
-
+                    lgn.parentModule = moduleNode;
+                    lgn.mC_BaseInstance = this;
+                    lgn.bodyType = bodyType;
                     lgn.exampleBody = exampleBody;
                     // Debug.Log(lgn.Validate());
                 }

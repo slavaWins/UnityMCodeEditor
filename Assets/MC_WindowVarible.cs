@@ -46,7 +46,10 @@ public class MC_WindowVarible : MonoBehaviour
         //SEditor.FormBuilder.ClearAllChildren(container);
 
         MC_VaribleElement go = Instantiate(prefabElement.gameObject, container).GetComponent<MC_VaribleElement>();
+        go.myId = localId;
         go.argument = argument;
+        go.myLinkType = linkType;
+        
         go.callbackWindow = this;
         go.isCanEditType = isCanEdit;
         go.Render();

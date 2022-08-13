@@ -174,6 +174,7 @@ namespace MCoder.UI
             foreach (MC_Argument lgn in mC_BaseInstance.nodesForEvents[currentEventNumber].myEvent.arguments)
             {
                 L++;
+                Debug.Log(lgn.name);
                 windowVarible.AddVarible(L, lgn, MC_Value_LinkType._event, false);
             }
 
