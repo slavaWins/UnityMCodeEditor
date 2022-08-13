@@ -63,17 +63,17 @@ namespace MCoder.UI
         {
             ReadInputs();
             Debug.Log("MoveLine " + from + " -> " + postLine);
-            IMCoder_NodeElement myClass = mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes[from];
+            MC_BaseNodeElement myClass = mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes[from];
 
-            IMCoder_NodeElement postClass = mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes[postLine];
+            MC_BaseNodeElement postClass = mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes[postLine];
 
-            List<IMCoder_NodeElement> logicnodes = new List<IMCoder_NodeElement>();
+            List<MC_BaseNodeElement> logicnodes = new List<MC_BaseNodeElement>();
 
 
             // if (postLine == -1) logicnodes.Add(myClass);
 
             int L = -1;
-            foreach (IMCoder_NodeElement lgn in mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes)
+            foreach (MC_BaseNodeElement lgn in mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes)
             {
 
                 if (lgn == myClass) continue;
@@ -97,7 +97,7 @@ namespace MCoder.UI
         public void AddLine(MC_BaseNodeElement myClass, int postLine)
         {
             ReadInputs();
-            List<IMCoder_NodeElement> logicnodes = new List<IMCoder_NodeElement>();
+            List<MC_BaseNodeElement> logicnodes = new List<MC_BaseNodeElement>();
 
             if (postLine == -1) logicnodes.Add(myClass);
 

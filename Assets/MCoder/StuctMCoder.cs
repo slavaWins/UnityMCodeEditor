@@ -28,7 +28,7 @@ namespace MCoder
         public object def;
     }
 
-
+    /*
     public interface IMCoder_NodeElement: IMC_SupportBodyType
     {
         public List<MC_Argument> arguments { get; set; }
@@ -49,7 +49,7 @@ namespace MCoder
         public bool Check() { return true; }
         public bool Call(object arg0 = null, object arg1 = null);
     }
-
+    */
 
     public interface IMCoder_If
     { 
@@ -85,9 +85,9 @@ namespace MCoder
         /// <summary>Это шаблон события. У него внутри есть требуемые аргументы</summary>
         public MC_Base_Event myEvent = new MC_Event_InteractClick();
 
-        public List<IMCoder_NodeElement> logicnodes = new List< IMCoder_NodeElement>();
+        public List<MC_BaseNodeElement> logicnodes = new List<MC_BaseNodeElement>();
 
-        public void AddNodesPackLogic(IMCoder_NodeElement element)
+        public void AddNodesPackLogic(MC_BaseNodeElement element)
         {
             //Debug.Log(logicnodes.Count); 
           //  Debug.Log(logicnodes.Count + "] " + element.myCompName);
@@ -101,11 +101,11 @@ namespace MCoder
             int blockedIfCount = 0;
 
             for(int L=0; L< logicnodes.Count; L++)
-            { 
+            {
 
-                IMCoder_NodeElement lnd = logicnodes[L];
+                MC_BaseNodeElement lnd = logicnodes[L];
 
-                string _lineDebug = "LINE  " + L + " IMCoder_NodeElement:" + lnd.name;
+                string _lineDebug = "LINE  " + L + " MC_BaseNodeElement:" + lnd.name;
                 
 
 
@@ -162,7 +162,7 @@ namespace MCoder
             int countelse=0;
 
             int i = 0;
-            foreach(IMCoder_NodeElement lg in logicnodes)
+            foreach(MC_BaseNodeElement lg in logicnodes)
             { 
                 i++;
 
@@ -233,11 +233,11 @@ namespace MCoder
     public class MC_Logicnode
     {
         public IMCoder_If myIf;
-        public List<IMCoder_NodeElement> logicnodes = new List<IMCoder_NodeElement>();
+        public List<MC_BaseNodeElement> logicnodes = new List<MC_BaseNodeElement>();
 
         public bool  Call()
         {
-            foreach (IMCoder_NodeElement lnd in logicnodes)
+            foreach (MC_BaseNodeElement lnd in logicnodes)
             {
                 if (!lnd.Check()) return false;
 

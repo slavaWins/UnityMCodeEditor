@@ -7,7 +7,7 @@ namespace MCoder.Libary
 {
 
 
-    public class ConsoleWrite_ActionNode : MC_BaseNodeElement, IMCoder_Function, IMCoder_NodeElement
+    public class ConsoleWrite_ActionNode : MC_BaseNodeElement, IMCoder_Function
     {
         public ConsoleWrite_ActionNode()
         {

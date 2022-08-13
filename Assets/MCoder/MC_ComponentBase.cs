@@ -42,7 +42,7 @@ namespace MCoder
         public bool IsSupportBodyType(BodyTypeEnum val);
     }
 
-    public class MC_BaseNodeElement :  IMCoder_Function, IMCoder_NodeElement, IMC_SupportBodyType
+    public class MC_BaseNodeElement :  IMCoder_Function, IMC_SupportBodyType
     {
         public List<BodyTypeEnum> supportBodyType { get; set; } = new List<BodyTypeEnum>();
 
@@ -54,6 +54,9 @@ namespace MCoder
         public string descr { get; set; } = null;    
         public ExampleBody exampleBody { get; set; }
         public BodyTypeEnum bodyType { get; set; }
+
+
+        public virtual bool Check() { return true; }
 
         public bool IsSupportBodyType(BodyTypeEnum val)
         {

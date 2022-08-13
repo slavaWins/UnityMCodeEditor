@@ -10,7 +10,7 @@ namespace MCoder.Libary
 
 
      
-    public class DamageSelf_ActionNode : MC_BaseNodeElement, IMCoder_Function, IMCoder_NodeElement
+    public class DamageSelf_ActionNode : MC_BaseNodeElement, IMCoder_Function
     {
         public DamageSelf_ActionNode()
         {
@@ -53,7 +53,7 @@ namespace MCoder.Libary
 
 
     //Если есть хп
-    public class MC_TrigerIfNoDie : MC_BaseNodeElement, IMCoder_If, IMCoder_NodeElement
+    public class MC_TrigerIfNoDie : MC_BaseNodeElement, IMCoder_If
     {
         
         public MC_TrigerIfNoDie()

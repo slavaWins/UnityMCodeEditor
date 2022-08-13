@@ -6,7 +6,7 @@ using UnityEngine;
 namespace MCoder.Libary
 {
 
-    public class MC_NodeIfEnd : MC_BaseNodeElement, IMCoder_NodeElement
+    public class MC_NodeIfEnd : MC_BaseNodeElement
     {
         public MC_NodeIfEnd()
         {

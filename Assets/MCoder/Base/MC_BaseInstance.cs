@@ -43,10 +43,10 @@ namespace MCoder
                 }
 
 
-                moduleNode.logicnodes = new List<IMCoder_NodeElement>();
+                moduleNode.logicnodes = new List<MC_BaseNodeElement>();
                 foreach (MC_Save_EventModule_Node nodesSave in modulesSave.Value.nodes)
                 {
-                    IMCoder_NodeElement node = MC_BD_Nodes.GetLineByInd(nodesSave.ind);
+                    MC_BaseNodeElement node = MC_BD_Nodes.GetLineByInd(nodesSave.ind);
                     node.values = nodesSave.values;
                     moduleNode.logicnodes.Add(node);
                 }
@@ -72,7 +72,7 @@ namespace MCoder
                 for (int L = 0; L < moduleNode.logicnodes.Count; L++)
                 {
 
-                    IMCoder_NodeElement lnd = moduleNode.logicnodes[L];
+                    MC_BaseNodeElement lnd = moduleNode.logicnodes[L];
 
                     MC_Save_EventModule_Node saveNode =  new MC_Save_EventModule_Node();
                     
@@ -201,7 +201,7 @@ namespace MCoder
                 }
 
                 int L = -1;
-                foreach (IMCoder_NodeElement lgn in moduleNode.logicnodes)
+                foreach (MC_BaseNodeElement lgn in moduleNode.logicnodes)
                 {
                     L++;
 
@@ -236,7 +236,7 @@ namespace MCoder
                 int j = 0;
 
                 moduleNode.body = exampleBody;
-                foreach (IMCoder_NodeElement lgn in moduleNode.logicnodes)
+                foreach (MC_BaseNodeElement lgn in moduleNode.logicnodes)
                 {
 
 
