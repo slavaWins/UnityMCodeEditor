@@ -1,5 +1,6 @@
 using MCoder.Libary;
 using SEditor;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,6 +32,15 @@ namespace MCoder.UI
              
         }
 
+        public MC_Event_Element GetElementById(int N)
+        {
+           
+            for (int i = 0; i < container.childCount; i++)
+            {
+                if (i == N) return container.GetChild(i).GetComponent<MC_Event_Element>();
+            }
+            return null;
+        }
         public void SelectEvent(int N)
         {
             coderSctipt.EventSelect(N);
@@ -89,6 +99,13 @@ namespace MCoder.UI
 
 
 
+        }
+
+        internal void ShowErrorIn(int eventLin)
+        {
+            MC_Event_Element e =  GetElementById(eventLin);
+            if (e == null) return;
+           e.SetVisibleError(true);
         }
     }
 }

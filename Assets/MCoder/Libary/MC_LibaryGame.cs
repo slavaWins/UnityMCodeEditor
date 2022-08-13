@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static MCoder.MC_BaseInstance;
 
 namespace MCoder.Libary
 {
@@ -17,6 +18,8 @@ namespace MCoder.Libary
             iconText = "DMG";
             descr = "Нанести урон";
 
+            supportBodyType = new List<BodyTypeEnum>() { BodyTypeEnum.item, BodyTypeEnum.mob, BodyTypeEnum.block };
+
             arguments = new List<MC_Argument>()
                 {
                     new MC_Argument(){myType=MC_ArgumentTypeEnum._int, name = "damageAmount"},
@@ -24,12 +27,12 @@ namespace MCoder.Libary
         }
 
 
-        public override string Validate()
+        public override MC_Error Validate()
         {
-            string res = base.Validate();
+            MC_Error res = base.Validate();
             if (res != null) return res;
 
-            if (exampleBody == null) return "Не указано тело";
+            if (exampleBody == null) return new MC_Error("Не указано тело");
             return null;
         }
 
@@ -58,6 +61,7 @@ namespace MCoder.Libary
             name = "IF";
             iconText = "ЕСЛИ";
             descr = "Если блок не умер. Ещё есть ХП";
+            supportBodyType = new List<BodyTypeEnum>() { BodyTypeEnum.item, BodyTypeEnum.mob, BodyTypeEnum.block };
         }
 
         public bool Check()

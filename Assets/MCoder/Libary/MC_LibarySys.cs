@@ -15,6 +15,7 @@ namespace MCoder.Libary
             iconText = "LOG";
             descr = "Написать сообщение в консоль";
 
+            supportBodyType = new List<BodyTypeEnum>() { BodyTypeEnum.item, BodyTypeEnum.mob, BodyTypeEnum.block };
             arguments = new List<MC_Argument>()
                 {
                     new MC_Argument(){myType=MC_ArgumentTypeEnum._string, name = "debugText"},

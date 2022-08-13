@@ -13,8 +13,9 @@ namespace MCoder.Libary
             name = "END";
             iconText = "ТОГДА";
             descr = "Конец логической операции ЕСЛИ";
+            supportBodyType = new List<BodyTypeEnum>() { BodyTypeEnum.item, BodyTypeEnum.mob, BodyTypeEnum.block };
         }
-
+        
         public bool Check()
         {
             return true;

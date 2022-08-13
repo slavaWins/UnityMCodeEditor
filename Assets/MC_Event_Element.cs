@@ -18,6 +18,7 @@ public class MC_Event_Element : MonoBehaviour
     public TMP_Text h1;
     public TMP_Text small;
     internal MC_Base_Event eventClass;
+    public GameObject showError;
 
     // Start is called before the first frame update
     public void Click()
@@ -43,4 +44,8 @@ public class MC_Event_Element : MonoBehaviour
         h1.text = eventClass.title;
         small.text = eventClass.descr;
     }
+    internal void SetVisibleError(bool val)
+    {
+        showError.gameObject.SetActive(val);
+    } 
 }

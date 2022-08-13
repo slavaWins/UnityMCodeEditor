@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using MCoder.Libary;
- 
+using static MCoder.MC_BaseInstance;
 
 namespace MCoder
 {
@@ -28,7 +28,7 @@ namespace MCoder
     }
 
 
-    public interface IMCoder_NodeElement
+    public interface IMCoder_NodeElement: IMC_SupportBodyType
     {
         public List<MC_Argument> arguments { get; set; }
         public List<object> values { get; set; }
@@ -40,7 +40,7 @@ namespace MCoder
 
         public ExampleBody exampleBody { get; set; }
         public BodyTypeEnum bodyType { get; set; }
-        public string Validate() { return null; }
+        public MC_Error Validate() { return null; }
 
         public bool isType_IF();
         public bool isType_END();

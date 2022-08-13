@@ -38,6 +38,8 @@ namespace MCoder
             List<MC_Base_Event> nodesList2 = new List<MC_Base_Event>();
             nodesList2.Add(new MC_Event_InteractClick()); 
             nodesList2.Add(new MC_Event_Hit()); 
+            nodesList2.Add(new MC_Event_Spawn()); 
+            nodesList2.Add(new MC_Event_Die()); 
 
             return nodesList2;
         }

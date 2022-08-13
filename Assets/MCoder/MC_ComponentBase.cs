@@ -4,15 +4,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using MCoder.Libary;
 using System.Linq;
+using static MCoder.MC_BaseInstance;
 
 namespace MCoder
 {
 
     
-  
-
-    public class MC_BaseNodeElement :  IMCoder_Function, IMCoder_NodeElement
+  public interface IMC_SupportBodyType
     {
+
+        public List<BodyTypeEnum> supportBodyType { get; set; }
+        public bool IsSupportBodyType(BodyTypeEnum val);
+    }
+
+    public class MC_BaseNodeElement :  IMCoder_Function, IMCoder_NodeElement, IMC_SupportBodyType
+    {
+        public List<BodyTypeEnum> supportBodyType { get; set; } = new List<BodyTypeEnum>();
 
         public List<object> values { get; set; } = new List<object>();
         public List<MC_Argument> arguments { get; set; } = new List<MC_Argument>();
@@ -22,25 +29,40 @@ namespace MCoder
         public ExampleBody exampleBody { get; set; }
         public BodyTypeEnum bodyType { get; set; }
 
+        public bool IsSupportBodyType(BodyTypeEnum val)
+        {
+            return supportBodyType.Contains(val);
+        }
+
         public int GetValueAsInt(int argNumber)
         {
 
             if (arguments.Count - 1 < argNumber)
             {
                 Debug.LogError(" Нет аргумента " + argNumber);
-                return 0;
+                return int.MinValue;
             }
 
-
             object val = values[argNumber];
+
+            if (val is string)
+            {
+                int _valToint = -1;
+                if (int.TryParse(val.ToString(), out _valToint))
+                {
+                    return _valToint;
+                }
+            }
+             
+
 
             if (val is int)
             {
                 return (int)val;
             }
 
-            Debug.LogError(" GetValueAsInt не int");
-            return 0;
+            Debug.LogError(" GetValueAsInt не int a " + val.GetType().ToString());
+            return int.MinValue;
         }
 
         public string GetValueAsString(int argNumber)
@@ -80,27 +102,47 @@ namespace MCoder
             return this.GetType().GetInterfaces().Contains(typeof(IMCoder_If));
         }
 
-        public virtual string Validate()
+        public virtual MC_Error Validate()
         {
-            if (name == null)return "У компонета нода нет названия! ComponentClass: " + this.GetType();
-            if (iconText == null)return "У компонета нода нет текстовой иконки! ComponentClass: " + this.GetType();
-            if (descr == null)return "У компонета нет описания! ComponentClass: " + this.GetType();
+            MC_Error error = new MC_Error();
+
+            if (supportBodyType == null)return new MC_Error("У компонета не указаны поддерживаемые типы боди ! ComponentClass: " + this.GetType());
+            if (name == null)return new MC_Error("У компонета нода нет названия! ComponentClass: " + this.GetType());
+            if (iconText == null)return new MC_Error("У компонета нода нет текстовой иконки! ComponentClass: " + this.GetType());
+            if (descr == null)return new MC_Error("У компонета нет описания! ComponentClass: " + this.GetType());
            
 
             
             if (arguments.Count > 0)
             {
-                int i = 0;
+                int i = -1;
                 foreach(MC_Argument arg in arguments)
                 {
                     i++;
-                    if(values.Count<i)  return "У "+ name + "("+ this.GetType()+ ")" +" Не указан аргумент " + arg.name;
+
+                    if (values.Count-1 < i)
+                    {
+                        error.text = "У " + name + "(" + this.GetType() + ")" + " Не указан аргумент " + arg.name;
+                        error.agrumentNumber = i;
+                        return error;
+                    }
+
+                    if(values[i].ToString()==null) return new MC_Error("Не указан аргумент, null в  " + arg.name).SelectArgument(i);
+                    if(values[i].ToString()=="") return new MC_Error("Не указан аргумент  " + arg.name).SelectArgument(i);
+
+                    if (arg.myType == MC_ArgumentTypeEnum._int)
+                    {
+                        if(GetValueAsInt(i)== int.MinValue)
+                        {
+                            return new MC_Error("Не подходит " + arg.name+ "! Должно быть целое число int!").SelectArgument(i);
+                        }
+                    }
                 }
             }
 
             if (arguments.Count > values.Count)
             {
-                return "Не указан какой-то аргумент";
+                return new MC_Error("Не указан какой-то аргумент");
             }
 
             return null;

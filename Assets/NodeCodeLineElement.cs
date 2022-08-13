@@ -21,6 +21,7 @@ namespace MCoder.UI
         public TMP_Text h1;
         public TMP_Text small;
         public TMP_Text iconText;
+        public GameObject showError;
 
 
         [Header("Drag")]
@@ -46,16 +47,40 @@ namespace MCoder.UI
             {
                 L++;
                 if (nodeClass.values.Count-1 < L) nodeClass.values.Add(0 as object);
+                /*
                 Debug.Log(nodeClass.values[L]);
                 Debug.Log(inputslist[L].text);
                 Debug.Log((object)inputslist[L].text);
-
+                */
                 nodeClass.values[L] = (object)inputslist[L].text;
             }
         }
 
 
         public List<TMP_InputField> inputslist = new List<TMP_InputField>();
+
+        internal void SetVisibleError(bool val)
+        {
+            showError.gameObject.SetActive(val);
+        }
+
+        internal void SetVisibleErrorInArgument(bool val, int agrumentNumber)
+        {
+            
+            showError.gameObject.SetActive(val);
+
+            if (agrumentNumber == -1) return;
+            if (inputslist.Count - 1 < agrumentNumber) return;
+            if (inputslist[agrumentNumber] == null) return;
+            inputslist[agrumentNumber].transform.parent.Find("_error").gameObject.SetActive(val);
+
+        }
+
+        public void OnEndEditArgumentText(string x)
+        {
+            Debug.Log("OnEndEditArgumentText " + x );
+            callbackPanel.Render();
+        }
 
         internal void Render()
         {
@@ -85,6 +110,7 @@ namespace MCoder.UI
                 {
                     inp.text = nodeClass.values[i].ToString();
                 }
+                inp.onEndEdit.AddListener(OnEndEditArgumentText);
 
                 argumentsInputsList.Add(inp);
 

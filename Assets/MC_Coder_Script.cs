@@ -4,18 +4,23 @@ using UnityEngine;
 using UnityEngine.UI;
 using MCoder;
 using TMPro;
+using SEditor;
 using System;
 using MCoder.Libary;
+using static MCoder.MC_BaseInstance;
 
 namespace MCoder.UI
 {
 
-    public class MC_Coder_Script : MonoBehaviour
+    public class MC_Coder_Script : MonoBehaviour, ICallbackInputDropDown
     {
         public TMP_Text errorText;
         public Transform container;
         public NodeCodeLineElement elementPrefab;
+        public MC_WindowsEvent windowsEvent;
         public int currentEventNumber = 0;
+
+        public InputDropdownComponent_SE selectBodyTypeForScript;
 
         public List<NodeCodeLineElement> Nodes = new List<NodeCodeLineElement>();
 
@@ -41,6 +46,7 @@ namespace MCoder.UI
         public MC_BaseInstance mC_BaseInstance = new ExampleInstanceDamageIfClick();
 
 
+
         internal void MoveLine(int from, int postLine)
         {
             ReadInputs();
@@ -51,20 +57,20 @@ namespace MCoder.UI
 
             List<IMCoder_NodeElement> logicnodes = new List<IMCoder_NodeElement>();
 
-        
-           // if (postLine == -1) logicnodes.Add(myClass);
+
+            // if (postLine == -1) logicnodes.Add(myClass);
 
             int L = -1;
             foreach (IMCoder_NodeElement lgn in mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes)
             {
 
                 if (lgn == myClass) continue;
-                
+
                 L++;
-                
+
                 logicnodes.Add(lgn);
 
-                if (lgn == postClass)  
+                if (lgn == postClass)
                 {
                     Debug.Log("PPP");
                     logicnodes.Add(myClass);
@@ -72,9 +78,7 @@ namespace MCoder.UI
             }
             mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes.Clear();
             mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes = logicnodes;
-            Render();
-
-            
+            Render(); 
 
         }
 
@@ -99,7 +103,7 @@ namespace MCoder.UI
             mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes = logicnodes;
             Render();
 
-          
+
         }
 
         /*
@@ -132,15 +136,45 @@ namespace MCoder.UI
             }
         }
 
+        public NodeCodeLineElement GetNodeLineElementByLine(int lineNumber)
+        {
+            int J=-1;
+            for (int i = 0; i < container.childCount; i++)
+            {
+                GameObject go = container.GetChild(i).gameObject;
+                if (!go.GetComponent<NodeCodeLineElement>()) continue;
+                J++;
+                
+                NodeCodeLineElement line = go.GetComponent<NodeCodeLineElement>();
+                if (J == lineNumber)
+                {
+                    return line;
+                }
+            }
+            return null;
+        }
         public void Render()
         {
-           // ReadInputs();
+            Debug.Log("==Render");
+            // ReadInputs();
             SEditor.FormBuilder.ClearAllChildren(container);
 
             int padding = 0;
 
-           // Debug.Log("currentEventNumber: " + currentEventNumber);
 
+            mC_BaseInstance.Init();
+
+            // Debug.Log("currentEventNumber: " + currentEventNumber);
+
+            int showwErrorInLine = -1;
+            MC_Error error = mC_BaseInstance.Validate();
+            if (error != null)
+            {
+                if (error.eventLin == currentEventNumber)
+                {
+                    showwErrorInLine = error.lineLogic;
+                }
+            }
 
             int L = -1;
             foreach (MC_BaseNodeElement lgn in mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes)
@@ -151,32 +185,88 @@ namespace MCoder.UI
                 go.lineNumber = L;
                 go.nodeClass = lgn;
                 go.callbackPanel = this;
+               
                 if (lgn.isType_END()) padding -= 1;
                 go.SetPadding(padding);
                 go.Render();
+
+                if (L == showwErrorInLine)
+                {
+                    go.SetVisibleError(true);
+                    go.SetVisibleErrorInArgument(true, error.agrumentNumber);
+
+                }
+
                 if (lgn.isType_IF()) padding += 1;
             }
 
-            StartCoroutine(container.GetComponent<VerticalLayoutGroup>().ChangeUpdate());
+            CheckAndDrawError();
 
-            string _val = mC_BaseInstance.Validate();
-            errorText.gameObject.SetActive(_val != null);
-            if (_val != null)
-            {
-                errorText.text = _val;
-            }
+            StartCoroutine(container.GetComponent<VerticalLayoutGroup>().ChangeUpdate());
+             
         }
 
-       
+        void CheckAndDrawError()
+        {
+            MC_Error error = mC_BaseInstance.Validate();
+            errorText.gameObject.SetActive(error != null);
+            if (error == null) return;
+
+            //Debug.Log("=========iset errror");
+            errorText.text = error.text;
+
+
+           // Debug.Log("eventLin errror " + error.eventLin);
+            windowsEvent.ShowErrorIn(error.eventLin);
+
+            /*
+            if (error.eventLin != currentEventNumber) return;
+
+            Debug.Log("this current eventLin errror " + error.eventLin);
+
+            NodeCodeLineElement nodeCodeLineElement = GetNodeLineElementByLine(error.lineLogic);
+           
+            if (nodeCodeLineElement == null) return; 
+            Debug.Log("lineLogic isset element " + error.lineLogic);
+
+            nodeCodeLineElement.SetVisibleError(true);
+            */
+
+        }
+
+        public delegate void SetBodyType(string ind);
+
 
         void Start()
         {
+            mC_BaseInstance.exampleBody = new ExampleBody();
+            mC_BaseInstance.bodyType = (BodyTypeEnum.mob);
+            //Добавляю инпут боди тайп всего скрипта
+            List<TMP_Dropdown.OptionData> _opt = new List<TMP_Dropdown.OptionData>();
+            foreach (string _name in Enum.GetNames(typeof(BodyTypeEnum)))
+            {
+                _opt.Add(new TMP_Dropdown.OptionData() { text = _name });
+            }
+            selectBodyTypeForScript.inputBox.options = _opt;
+            selectBodyTypeForScript.callbackClass = this;
+            selectBodyTypeForScript.SetValue((int)mC_BaseInstance.bodyType);
+
+
             Render();
         }
 
         // Update is called once per frame
         void Update()
         {
+
+        }
+
+        public void SetOptionFromSelect(int id, string ind, InputDropdownComponent_SE from)
+        {
+            if (from == selectBodyTypeForScript) {
+                mC_BaseInstance.bodyType = (BodyTypeEnum)id;
+                Render();
+            }
 
         }
     }

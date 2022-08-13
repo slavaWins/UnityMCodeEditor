@@ -143,10 +143,49 @@ namespace MCoder
             }
         }
 
-        public virtual string Validate()
+        public class MC_Error
         {
+            public string text = "xz";
+            public int eventLin = -1;
+            public int lineLogic = -1;
+            public int agrumentNumber =-1;
+            public MC_Error SelectArgument(int id)
+            {
+                agrumentNumber = id;
+                return this;
+            }
+            public MC_Error(string t, int evLine=-1, int l=-1)
+            {
+                text = t;
+                eventLin = evLine;
+                lineLogic = l;
+                agrumentNumber = -1;
+            }
+            public MC_Error()
+            {
+              
+            }
+        }
+
+        public virtual MC_Error Validate()
+        {
+
+            if (exampleBody == null)
+            {
+                return new MC_Error("Не укзано тело для этого скрипта!", -1,-1);
+            }
+
+
+            MC_Error error = new MC_Error();
+
+
+            
+
+            int eventLine = -1;
             foreach (MC_NodeEventModule moduleNode in nodesForEvents)
             {
+                eventLine++;
+
                 string errrorModule = "\n In module " + moduleNode.GetType().ToString();
 
                 string res = moduleNode.Validate();
@@ -154,10 +193,10 @@ namespace MCoder
                 if (res != null)
                 {
                     issetError = true;
-                    return res + errrorModule;
+                    return new MC_Error(res + errrorModule, eventLine, -1);
                 }
 
-                int L = 0;
+                int L = -1;
                 foreach (IMCoder_NodeElement lgn in moduleNode.logicnodes)
                 {
                     L++;
@@ -165,16 +204,19 @@ namespace MCoder
                     string lineErorror = errrorModule + " \n In line " + L + "\n In node: " + lgn.name;
 
 
-                    if (lgn.bodyType != bodyType)
+                    if (!lgn.IsSupportBodyType(bodyType))
                     {
-                        return "Не полходит боди тайп" + lineErorror;
+                        return new MC_Error("Не полходит боди тайп" + lineErorror, eventLine, L); 
                     }
 
-                    res = lgn.Validate();
-                    if (res != null)
+
+                    MC_Error _lineError  = lgn.Validate();
+                    if (_lineError != null)
                     {
                         issetError = true;
-                        return res + lineErorror;
+                        error =   new MC_Error(_lineError.text + " " + res + lineErorror, eventLine, L);
+                        error.agrumentNumber = _lineError.agrumentNumber;
+                        return error;
                     }
                 }
             }
@@ -189,7 +231,7 @@ namespace MCoder
 
                 int j = 0;
 
-
+                moduleNode.body = exampleBody;
                 foreach (IMCoder_NodeElement lgn in moduleNode.logicnodes)
                 {
 
@@ -202,12 +244,13 @@ namespace MCoder
 
             }
 
-            string res = Validate();
+            MC_Error res = Validate();
+
 
             if (res != null)
             {
                 issetError = true;
-                Debug.Log(res);
+                Debug.Log(res.text);
                 return;
             }
 
