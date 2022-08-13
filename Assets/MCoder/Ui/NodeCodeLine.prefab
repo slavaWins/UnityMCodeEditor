@@ -404,12 +404,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d7ba6ec6457a0148a5ec46485197104, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myGhostDragibleCline: {fileID: 0}
+  targetDropClass: {fileID: 0}
   argumentsInputsList: []
   argumentInput: {fileID: 2804917584942149740, guid: f69419bd005b0684695f85769ae7b047, type: 3}
   lineNumber: 0
   h1: {fileID: 2873223518119740693}
   small: {fileID: 4989202238882496313}
   iconText: {fileID: 6462253901438242481}
+  addHerePrefab: {fileID: 4941029867041091919, guid: 2d7761dce37fbcc40bc9e59f872e5893, type: 3}
 --- !u!114 &7667519716342344189
 MonoBehaviour:
   m_ObjectHideFlags: 0

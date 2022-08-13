@@ -21,6 +21,7 @@ namespace MCoder.UI
 
         internal void EventCreate(MC_Base_Event plusEvent)
         {
+            ReadInputs();
             MC_Base_Event _eventNewFromClass = (MC_Base_Event)Activator.CreateInstance(plusEvent.GetType());
             MC_NodeEventModule module = new MC_NodeEventModule(BodyTypeEnum.block);
             module.myEvent = _eventNewFromClass;
@@ -31,6 +32,7 @@ namespace MCoder.UI
 
         internal void EventSelect(int Line)
         {
+            ReadInputs();
             currentEventNumber = Line;
             Render();
 
@@ -39,13 +41,51 @@ namespace MCoder.UI
         public MC_BaseInstance mC_BaseInstance = new ExampleInstanceDamageIfClick();
 
 
+        internal void MoveLine(int from, int postLine)
+        {
+            ReadInputs();
+            Debug.Log("MoveLine " + from + " -> " + postLine);
+            IMCoder_NodeElement myClass = mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes[from];
+
+            IMCoder_NodeElement postClass = mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes[postLine];
+
+            List<IMCoder_NodeElement> logicnodes = new List<IMCoder_NodeElement>();
+
+        
+           // if (postLine == -1) logicnodes.Add(myClass);
+
+            int L = -1;
+            foreach (IMCoder_NodeElement lgn in mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes)
+            {
+
+                if (lgn == myClass) continue;
+                
+                L++;
+                
+                logicnodes.Add(lgn);
+
+                if (lgn == postClass)  
+                {
+                    Debug.Log("PPP");
+                    logicnodes.Add(myClass);
+                }
+            }
+            mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes.Clear();
+            mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes = logicnodes;
+            Render();
+
+            
+
+        }
+
         public void AddLine(MC_BaseNodeElement myClass, int postLine)
         {
+            ReadInputs();
             List<IMCoder_NodeElement> logicnodes = new List<IMCoder_NodeElement>();
 
             if (postLine == -1) logicnodes.Add(myClass);
 
-            int L = 0;
+            int L = -1;
             foreach (MC_BaseNodeElement lgn in mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes)
             {
                 L++;
@@ -59,12 +99,7 @@ namespace MCoder.UI
             mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes = logicnodes;
             Render();
 
-            string _val = mC_BaseInstance.Validate();
-            errorText.gameObject.SetActive(_val != null);
-            if (_val != null)
-            {
-                errorText.text = _val;
-            }
+          
         }
 
         /*
@@ -86,19 +121,28 @@ namespace MCoder.UI
         {
 
         }
-
+        internal void ReadInputs()
+        {
+            for (int i = 0; i < container.childCount; i++)
+            {
+                GameObject go = container.GetChild(i).gameObject;
+                if (!go.GetComponent<NodeCodeLineElement>()) continue;
+                NodeCodeLineElement line = go.GetComponent<NodeCodeLineElement>();
+                line.ReadInput();
+            }
+        }
 
         public void Render()
         {
-
+           // ReadInputs();
             SEditor.FormBuilder.ClearAllChildren(container);
 
             int padding = 0;
 
-            Debug.Log("currentEventNumber: " + currentEventNumber);
+           // Debug.Log("currentEventNumber: " + currentEventNumber);
 
 
-            int L = 0;
+            int L = -1;
             foreach (MC_BaseNodeElement lgn in mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes)
             {
                 L++;
@@ -115,11 +159,15 @@ namespace MCoder.UI
 
             StartCoroutine(container.GetComponent<VerticalLayoutGroup>().ChangeUpdate());
 
+            string _val = mC_BaseInstance.Validate();
+            errorText.gameObject.SetActive(_val != null);
+            if (_val != null)
+            {
+                errorText.text = _val;
+            }
         }
 
-
-
-
+       
 
         void Start()
         {

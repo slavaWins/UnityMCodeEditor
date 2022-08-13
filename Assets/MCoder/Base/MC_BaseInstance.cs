@@ -207,7 +207,7 @@ namespace MCoder
             if (res != null)
             {
                 issetError = true;
-                Debug.LogError(res);
+                Debug.Log(res);
                 return;
             }
 

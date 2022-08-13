@@ -153,6 +153,7 @@ namespace MCoder.UI
 
             if (targetDropClass != null)
             {  
+                
                 DragEnd_TargetClass();
             }
             else
