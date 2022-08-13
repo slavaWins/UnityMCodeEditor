@@ -35,6 +35,8 @@ namespace MCoder.UI
 
         public List<NodeCodeLineElement> Nodes = new List<NodeCodeLineElement>();
 
+ public MC_BaseInstance mC_BaseInstance = new ExampleInstanceDamageIfClick();
+
         internal void EventCreate(MC_Base_Event plusEvent)
         {
             ReadInputs();
@@ -54,8 +56,7 @@ namespace MCoder.UI
 
         }
 
-        public MC_BaseInstance mC_BaseInstance = new ExampleInstanceDamageIfClick();
-
+       
 
 
         internal void MoveLine(int from, int postLine)
@@ -174,6 +175,21 @@ namespace MCoder.UI
             {
                 L++;
                 windowVarible.AddVarible(L, lgn, MC_Value_LinkType._event, false);
+            }
+
+              L = -1;
+            foreach (MC_Argument lgn in mC_BaseInstance.argumentsCustoms)
+            {
+                L++;
+                windowVarible.AddVarible(L, lgn, MC_Value_LinkType._custom, true);
+            }
+
+
+              L = -1;
+            foreach (MC_Argument lgn in mC_BaseInstance.argumentsInputs)
+            {
+                L++;
+                windowVarible.AddVarible(L, lgn, MC_Value_LinkType._input, true);
             }
         }
 

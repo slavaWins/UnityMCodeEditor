@@ -10,7 +10,7 @@ using MCoder.UI;
 using MCoder;
 using System;
 
-public class MC_VaribleElement : DragableElementLine<UMC_Element_Argument>
+public class MC_VaribleElement : DragableElementLine<UMC_Element_Argument>, ICallbackInputDropDown
 {
 
     [HideInInspector]
@@ -38,8 +38,11 @@ public class MC_VaribleElement : DragableElementLine<UMC_Element_Argument>
 
     public void Render()
     {
+        
         inpSelectType.gameObject.SetActive(isCanEditType);
         _typeText.gameObject.SetActive(!isCanEditType);
+
+       if(isCanEditType)CreateInputSelectType();
 
         title.text = argument.name;
         _typeText.text = argument.myType.ToString();
@@ -50,9 +53,29 @@ public class MC_VaribleElement : DragableElementLine<UMC_Element_Argument>
 
     void Start()
     {
-        
+       
     }
 
+
+    void CreateInputSelectType()
+    {
+        List<TMP_Dropdown.OptionData> _opt = new List<TMP_Dropdown.OptionData>();
+        foreach (string _name in Enum.GetNames(typeof(MC_ArgumentTypeEnum)))
+        {
+            _opt.Add(new TMP_Dropdown.OptionData() { text = _name });
+        }
+        inpSelectType.inputBox.options = _opt;
+        inpSelectType.callbackClass = this;
+        inpSelectType.SetValue((int)argument.myType);
+    }
+
+    public void SetOptionFromSelect(int id, string ind, InputDropdownComponent_SE from)
+    {
+        argument.myType = (MC_ArgumentTypeEnum)id;
+        //Render();
+        callbackWindow.codeScript.Render();
+
+    }
 
     void Update()
     {
@@ -127,7 +150,8 @@ public class MC_VaribleElement : DragableElementLine<UMC_Element_Argument>
 
         targetDropClass.meValue.linkType = MC_Value_LinkType._event;
         targetDropClass.meValue.linkId = myId;
-        targetDropClass.Render();
+        //targetDropClass.Render();
+        callbackWindow.codeScript.Render();
     }
 
     public override void DragEnd_UnTargetClass(GameObject gameObject)
@@ -141,4 +165,5 @@ public class MC_VaribleElement : DragableElementLine<UMC_Element_Argument>
         if (addHere != null) Destroy(addHere);
     }
 
+  
 }

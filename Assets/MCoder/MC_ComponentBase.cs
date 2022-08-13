@@ -46,6 +46,7 @@ namespace MCoder
     {
         public List<BodyTypeEnum> supportBodyType { get; set; } = new List<BodyTypeEnum>();
 
+        public MC_BaseInstance mC_BaseInstance;
         public List<MC_Value> values { get; set; } = new List<MC_Value>();
         public List<MC_Argument> arguments { get; set; } = new List<MC_Argument>();
         public string name { get; set; } = null;   
@@ -127,6 +128,8 @@ namespace MCoder
             return this.GetType().GetInterfaces().Contains(typeof(IMCoder_If));
         }
 
+        
+
         public virtual MC_Error Validate()
         {
             MC_Error error = new MC_Error();
@@ -141,19 +144,49 @@ namespace MCoder
             if (arguments.Count > 0)
             {
                 int i = -1;
-                foreach(MC_Argument arg in arguments)
+                foreach (MC_Argument arg in arguments)
                 {
                     i++;
 
-                    if (values.Count-1 < i)
+                    if (values.Count - 1 < i)
                     {
                         error.text = "У " + name + "(" + this.GetType() + ")" + " Не указан аргумент " + arg.name;
                         error.agrumentNumber = i;
                         return error;
                     }
 
-                    if(values[i].val.ToString()==null) return new MC_Error("Не указан аргумент, null в  " + arg.name).SelectArgument(i);
-                    if(values[i].val.ToString()=="") return new MC_Error("Не указан аргумент  " + arg.name).SelectArgument(i);
+                    if (values[i].val.ToString() == null || values[i].val.ToString() == "")
+                    {
+                        if (values[i].linkType == MC_Value_LinkType._none)
+                        {
+                            return new MC_Error("Не указан аргумент, null в  " + arg.name).SelectArgument(i);
+                        }
+                    }
+
+                    if (values[i].linkType == MC_Value_LinkType._custom)
+                    {
+                        if (mC_BaseInstance.argumentsCustoms[values[i].linkId].myType != arg.myType)
+                        {
+                            return new MC_Error("Не сходится тип переменной в  " + arg.name + "").SelectArgument(i);
+                        }
+                    }
+
+                    if (values[i].linkType == MC_Value_LinkType._input)
+                    {
+                        if (mC_BaseInstance.argumentsInputs[values[i].linkId].myType != arg.myType)
+                        {
+                            return new MC_Error("Не сходится тип переменной в  " + arg.name + "").SelectArgument(i);
+                        }
+                    }
+                    /*
+                    if (values[i].linkType == MC_Value_LinkType._event)
+                    {
+                        if  (mye .argumentsInputs[values[i].linkId].myType != arg.myType)
+                        {
+                            return new MC_Error("Не сходится тип переменной в  " + arg.name + "").SelectArgument(i);
+                        }
+                    }
+                    */
 
                     if (arg.myType == MC_ArgumentTypeEnum._int)
                     {
@@ -162,6 +195,8 @@ namespace MCoder
                             return new MC_Error("Не подходит " + arg.name+ "! Должно быть целое число int!").SelectArgument(i);
                         }
                     }
+
+
                 }
             }
 

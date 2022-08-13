@@ -56,6 +56,7 @@ public class UMC_Element_Argument : MonoBehaviour
 
         if (meValue.linkType != MC_Value_LinkType._none)
         {
+            
             fromVaribleName.text = meValue.linkType.ToString();
             fromVaribleType.text = argument.myType.ToString().Replace("_","");
             fromVaribleName.transform.parent.GetComponent<Image>().color = MC_Colors.GetColorByType(argument.myType);

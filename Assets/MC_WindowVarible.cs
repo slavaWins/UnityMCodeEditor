@@ -21,6 +21,11 @@ public class MC_WindowVarible : MonoBehaviour
     public Transform labelBy_Custom;
     public Transform container;
 
+    [Header("Btns")]
+    public Button btnAddInput;
+    public Button btnAddCustom;
+
+
     [Header("Prefabs")]
     public MC_VaribleElement prefabElement;
 
@@ -43,6 +48,7 @@ public class MC_WindowVarible : MonoBehaviour
         MC_VaribleElement go = Instantiate(prefabElement.gameObject, container).GetComponent<MC_VaribleElement>();
         go.argument = argument;
         go.callbackWindow = this;
+        go.isCanEditType = isCanEdit;
         go.Render();
         dicList.Add(argument, go);
 
@@ -54,10 +60,32 @@ public class MC_WindowVarible : MonoBehaviour
         StartCoroutine(container.GetComponent<VerticalLayoutGroup>().ChangeUpdate());
     }
 
-    // Start is called before the first frame update
+    
+    void CreateCutomVarible()
+    {
+        
+        MC_Argument _arg = new MC_Argument();
+        _arg.name = "Custom_" + codeScript.mC_BaseInstance.argumentsCustoms.Count;
+        _arg.myType = MC_ArgumentTypeEnum._string;
+
+        codeScript.mC_BaseInstance.argumentsCustoms.Add(_arg);
+        codeScript.Render();
+    }
+
+    void CreateInputVarible()
+    {
+        MC_Argument _arg = new MC_Argument();
+        _arg.name = "Custom_" + codeScript.mC_BaseInstance.argumentsInputs.Count;
+        _arg.myType = MC_ArgumentTypeEnum._string;
+
+        codeScript.mC_BaseInstance.argumentsInputs.Add(_arg);
+        codeScript.Render();
+    }
+
     void Start()
     {
-
+        btnAddInput.onClick.AddListener(CreateInputVarible);
+        btnAddCustom.onClick.AddListener(CreateCutomVarible);
     }
 
     // Update is called once per frame

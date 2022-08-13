@@ -105,6 +105,10 @@ namespace MCoder
         public ExampleBody exampleBody;
         public BodyTypeEnum bodyType { get; set; }
 
+
+        public List<MC_Argument> argumentsCustoms = new List<MC_Argument>();
+        public List<MC_Argument> argumentsInputs = new List<MC_Argument>();
+
         /// <summary>Список модулей инстанса. Модуль это скрипты из нодов, и событие при котором это всё вызывается</summary>
         public List<MC_NodeEventModule> nodesForEvents = new List<MC_NodeEventModule>();
 
