@@ -46,13 +46,13 @@ namespace MCoder.UI
             foreach (var arg in nodeClass.arguments)
             {
                 L++;
-                if (nodeClass.values.Count-1 < L) nodeClass.values.Add(0 as object);
+                if (nodeClass.values.Count-1 < L) nodeClass.values.Add(new MC_Value());
                 /*
                 Debug.Log(nodeClass.values[L]);
                 Debug.Log(inputslist[L].text);
                 Debug.Log((object)inputslist[L].text);
                 */
-                nodeClass.values[L] = (object)inputslist[L].text;
+                nodeClass.values[L].val = (object)inputslist[L].text;
             }
         }
 
@@ -78,7 +78,7 @@ namespace MCoder.UI
 
         public void OnEndEditArgumentText(string x)
         {
-            Debug.Log("OnEndEditArgumentText " + x );
+           // Debug.Log("OnEndEditArgumentText " + x );
             ReadInput();
             callbackPanel.Render();
         }
@@ -98,12 +98,18 @@ namespace MCoder.UI
             foreach( MC_Argument arg in nodeClass.arguments)
             {
                 i++;
-               
 
-                UMC_Element_Argument go =  Instantiate(argumentInputPrefab.gameObject, transform).GetComponent<UMC_Element_Argument>();
+                if (nodeClass.values.Count - 1 < i)
+                {
+                    nodeClass.values.Add(new MC_Value(""));
+                }
+
+                    UMC_Element_Argument go =  Instantiate(argumentInputPrefab.gameObject, transform).GetComponent<UMC_Element_Argument>();
                 go.argument = arg;
                 go.classParent = this;
                 go.nodeClass = nodeClass;
+                go.meValue = nodeClass.values[i];
+                go.Init();
                 go.Render();
 
                
@@ -114,7 +120,7 @@ namespace MCoder.UI
                 inp.text = "";
                 if (nodeClass.values.Count-1 >= i)
                 {
-                    inp.text = nodeClass.values[i].ToString();
+                    inp.text = nodeClass.values[i].val.ToString();
                 }
                 
 

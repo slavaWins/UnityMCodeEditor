@@ -32,7 +32,7 @@ namespace MCoder
     public interface IMCoder_NodeElement: IMC_SupportBodyType
     {
         public List<MC_Argument> arguments { get; set; }
-        public List<object> values { get; set; }
+        public List<MC_Value> values { get; set; }
 
         public string iconText { get; set; } 
         public string descr { get; set; } 

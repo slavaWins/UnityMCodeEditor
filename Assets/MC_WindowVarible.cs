@@ -17,7 +17,8 @@ public class MC_WindowVarible : MonoBehaviour
 
     [Header("Inner")]
     public Transform labelBy_Event;
-    public Transform labelBy_Varible;
+    public Transform labelBy_Input;
+    public Transform labelBy_Custom;
     public Transform container;
 
     [Header("Prefabs")]
@@ -35,7 +36,7 @@ public class MC_WindowVarible : MonoBehaviour
         dicList.Clear();
     }
 
-    public void AddVarible(int localId, MC_Argument argument, bool isCanEdit)
+    public void AddVarible(int localId, MC_Argument argument,  MC_Value_LinkType linkType, bool isCanEdit)
     {
         //SEditor.FormBuilder.ClearAllChildren(container);
 
@@ -45,6 +46,10 @@ public class MC_WindowVarible : MonoBehaviour
         go.Render();
         dicList.Add(argument, go);
 
+        if (linkType == MC_Value_LinkType._event) go.transform.SetSiblingIndex(labelBy_Event.GetSiblingIndex() + 1);
+        if (linkType == MC_Value_LinkType._custom) go.transform.SetSiblingIndex(labelBy_Custom.GetSiblingIndex() + 1);
+        if (linkType == MC_Value_LinkType._input) go.transform.SetSiblingIndex(labelBy_Input.GetSiblingIndex() + 1);
+        
 
         StartCoroutine(container.GetComponent<VerticalLayoutGroup>().ChangeUpdate());
     }

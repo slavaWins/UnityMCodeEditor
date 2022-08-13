@@ -57,7 +57,13 @@ namespace MCoder.UI
         {
 
         }
+        /// <summary> ¬первые зашел на таргет класс </summary>
+        internal virtual void OnMoveEnterInTargetClass()
+        {
 
+        }
+
+        /// <summary> ¬ышел из  таргет класса </summary>
         internal virtual void OnMoveExitInTargetClass()
         {
          //   Debug.Log("я ушел с нужного класса");
@@ -89,28 +95,52 @@ namespace MCoder.UI
         }
 
 
+        TargetDragClass SearchTargetGo(GameObject go)
+        {
+            if (go == null) return null;
+            TargetDragClass _isset = null;
+
+            _isset = go.transform.GetComponent<TargetDragClass>();
+            if (_isset != null) return _isset;
+
+            _isset = go.transform.parent.GetComponent<TargetDragClass>();
+            if (_isset != null) return _isset;
+
+            return null;
+        }
+
         public void OnDrag(PointerEventData eventData)
         {
 
 
             SetDraggedPosition(eventData);
-            
 
-            if (eventData.pointerCurrentRaycast.gameObject != null)
+
+            TargetDragClass _targetSearch = SearchTargetGo(eventData.pointerCurrentRaycast.gameObject);
+            if (_targetSearch != null)
             {
-                if (eventData.pointerCurrentRaycast.gameObject.transform.parent.GetComponent<TargetDragClass>()!=null) {
-                    TargetDragClass _newTarget = eventData.pointerCurrentRaycast.gameObject.transform.parent.GetComponent<TargetDragClass>();
-                   
-                    if(_newTarget!= targetDropClass && targetDropClass!=null)
-                    {
-                        OnMoveExitInTargetClass();
-                    }
 
-                    targetDropClass = _newTarget;
-                   
-                    OnMoveUpdateInTargetClass(); 
-                    return;
+                TargetDragClass _newTarget = _targetSearch;
+
+                if (_newTarget != targetDropClass && targetDropClass != null)
+                {
+                    OnMoveExitInTargetClass();
+                     
+                    
                 }
+              
+          
+
+                if (_newTarget != targetDropClass)
+                {
+                    targetDropClass = _newTarget;
+                    OnMoveEnterInTargetClass();
+                }
+                targetDropClass = _newTarget;
+
+                OnMoveUpdateInTargetClass();
+                return;
+
             }
 
            

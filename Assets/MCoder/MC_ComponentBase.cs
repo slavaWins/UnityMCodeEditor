@@ -22,6 +22,16 @@ namespace MCoder
         public object val;
         public MC_Value_LinkType linkType;
         public int linkId;
+
+        public MC_Value (object _val = null)
+        {
+            val = _val;
+        }
+        public MC_Value SetVal(object _val)
+        {
+            val = _val;
+            return this;
+        }
     }
 
     
@@ -36,7 +46,7 @@ namespace MCoder
     {
         public List<BodyTypeEnum> supportBodyType { get; set; } = new List<BodyTypeEnum>();
 
-        public List<object> values { get; set; } = new List<object>();
+        public List<MC_Value> values { get; set; } = new List<MC_Value>();
         public List<MC_Argument> arguments { get; set; } = new List<MC_Argument>();
         public string name { get; set; } = null;   
         public string iconText { get; set; } = null;   
@@ -58,7 +68,7 @@ namespace MCoder
                 return int.MinValue;
             }
 
-            object val = values[argNumber];
+            object val = values[argNumber].val;
 
             if (val is string)
             {
@@ -90,7 +100,7 @@ namespace MCoder
             }
 
 
-            object val = values[argNumber];
+            object val = values[argNumber].val;
 
             if (val is string)
             {
@@ -142,8 +152,8 @@ namespace MCoder
                         return error;
                     }
 
-                    if(values[i].ToString()==null) return new MC_Error("Не указан аргумент, null в  " + arg.name).SelectArgument(i);
-                    if(values[i].ToString()=="") return new MC_Error("Не указан аргумент  " + arg.name).SelectArgument(i);
+                    if(values[i].val.ToString()==null) return new MC_Error("Не указан аргумент, null в  " + arg.name).SelectArgument(i);
+                    if(values[i].val.ToString()=="") return new MC_Error("Не указан аргумент  " + arg.name).SelectArgument(i);
 
                     if (arg.myType == MC_ArgumentTypeEnum._int)
                     {

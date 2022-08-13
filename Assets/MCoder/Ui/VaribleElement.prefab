@@ -388,7 +388,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 34.2503}
+  m_SizeDelta: {x: 322, y: 34.2503}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5784546455592106592
 CanvasRenderer:
@@ -487,10 +487,12 @@ MonoBehaviour:
   myGhostDragibleCline: {fileID: 0}
   targetDropClass: {fileID: 0}
   callbackWindow: {fileID: 0}
+  myId: 0
   title: {fileID: 1936904179933495231}
   _typeText: {fileID: 5459369062767413614}
   inpSelectType: {fileID: 1705044742145025997}
-  addHerePrefab: {fileID: 4941029867041091919, guid: 2d7761dce37fbcc40bc9e59f872e5893, type: 3}
+  isCanEditType: 0
+  addHerePrefab: {fileID: 77495670558411621, guid: be4d7e7770cd968489b2f45881861a6f, type: 3}
 --- !u!1001 &7260071347793421021
 PrefabInstance:
   m_ObjectHideFlags: 0

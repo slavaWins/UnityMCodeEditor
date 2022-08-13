@@ -31,13 +31,13 @@ namespace MCoder
 
             //Добавляем ноду на дамаг себя
             DamageSelf_ActionNode nodeDamage = new DamageSelf_ActionNode();
-            nodeDamage.values.Add(2);
+            nodeDamage.values.Add(new MC_Value(2));
             mC_Node.AddNodesPackLogic(nodeDamage);
 
 
             //Пишем в консоль что ударен
             ConsoleWrite_ActionNode nodeLog = new ConsoleWrite_ActionNode();
-            nodeLog.values.Add("kick my asss");
+            nodeLog.values.Add(new MC_Value("kick my asss") );
             mC_Node.AddNodesPackLogic(nodeLog);
 
 

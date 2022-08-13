@@ -10,7 +10,7 @@ namespace MCoder
     public class MC_Save_EventModule_Node
     {
         public string ind;
-        public List<object> values = new List<object>();
+        public List<MC_Value> values = new List<MC_Value>();
     }
 
     public class MC_Save_EventModule
@@ -250,7 +250,7 @@ namespace MCoder
             if (res != null)
             {
                 issetError = true;
-                Debug.Log(res.text);
+                Debug.Log("~~~~"+res.text);
                 return;
             }
 
