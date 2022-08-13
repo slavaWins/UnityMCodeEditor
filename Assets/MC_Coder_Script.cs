@@ -14,12 +14,23 @@ namespace MCoder.UI
 
     public class MC_Coder_Script : MonoBehaviour, ICallbackInputDropDown
     {
-        public TMP_Text errorText;
-        public Transform container;
-        public NodeCodeLineElement elementPrefab;
+
+        [Header("Integrate Windows")]
+        public MC_WindowVarible windowVarible;
         public MC_WindowsEvent windowsEvent;
+
+        [Header("Integrate Other ")]
+        public TMP_Text errorText;
+
+        [Header("Inner")]
+        public Transform container;
+
+
+        [Header("Prefabs")]
+        public NodeCodeLineElement elementPrefab; 
         public int currentEventNumber = 0;
 
+        [Header("Others")]
         public InputDropdownComponent_SE selectBodyTypeForScript;
 
         public List<NodeCodeLineElement> Nodes = new List<NodeCodeLineElement>();
@@ -153,9 +164,25 @@ namespace MCoder.UI
             }
             return null;
         }
+    
+        public void RenderVaribles( )
+        {
+            windowVarible.ClearAll();
+
+            int L = -1;
+            foreach (MC_Argument lgn in mC_BaseInstance.nodesForEvents[currentEventNumber].myEvent.arguments)
+            {
+                L++;
+                windowVarible.AddVarible(L, lgn, false);
+
+            }
+        }
+
         public void Render()
         {
-            Debug.Log("==Render");
+
+
+           // Debug.Log("==Render");
             // ReadInputs();
             SEditor.FormBuilder.ClearAllChildren(container);
 
@@ -175,8 +202,8 @@ namespace MCoder.UI
                     showwErrorInLine = error.lineLogic;
                 }
             }
-
-            int L = -1;
+            
+                int L = -1;
             foreach (MC_BaseNodeElement lgn in mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes)
             {
                 L++;
@@ -198,8 +225,11 @@ namespace MCoder.UI
                 }
 
                 if (lgn.isType_IF()) padding += 1;
-            }
 
+              
+            }
+            RenderVaribles();
+            windowsEvent.HideAllError();
             CheckAndDrawError();
 
             StartCoroutine(container.GetComponent<VerticalLayoutGroup>().ChangeUpdate());

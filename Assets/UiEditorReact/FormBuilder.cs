@@ -372,7 +372,7 @@ namespace SEditor {
                     inputBigSelect_SE input = go.GetComponent<inputBigSelect_SE>(); 
                     inputComponent = input;
                     input.val = elem.valueString; 
-                    input.options=(elem.optionsSelectBig);
+                    input.SetOptionByIndSprite (elem.optionsSelectBig);
                 }
 
                 if (elem.mytype == InputDataTypeEnum.Title)

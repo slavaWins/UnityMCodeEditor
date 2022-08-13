@@ -115,7 +115,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -9.999695, y: -234.681}
+  m_AnchoredPosition: {x: -9.999695, y: -260.181}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1808473662578511142
@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
-  m_VerticalFit: 1
+  m_VerticalFit: 2
 --- !u!114 &7410034864470160689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,7 +190,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 164, y: 164}
+  m_CellSize: {x: 180, y: 180}
   m_Spacing: {x: 6, y: 6}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -581,7 +581,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9666d75c7edff4f42aab48559ccec39b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myInputCallback: {fileID: 0}
   templateElement: {fileID: 5000007607050295430, guid: 56e7af42282c8fc41a8965914f3d3ba0, type: 3}
   container: {fileID: 3900958215561065833}
   btnClose: {fileID: 24198573649209376}
@@ -1288,22 +1287,3 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4610506862996948235, guid: 56e7af42282c8fc41a8965914f3d3ba0, type: 3}
   m_PrefabInstance: {fileID: 3191238474204684601}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6638882503314990086 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8100711335880475967, guid: 56e7af42282c8fc41a8965914f3d3ba0, type: 3}
-  m_PrefabInstance: {fileID: 3191238474204684601}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8009606947805755311
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6638882503314990086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c02f5f7011b54c24bba6ff978ddbe767, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myCallbackCanvas: {fileID: 0}
-  ind: 

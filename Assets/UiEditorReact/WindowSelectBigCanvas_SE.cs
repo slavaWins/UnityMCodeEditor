@@ -43,19 +43,16 @@ namespace SEditor
 
         }
 
-        public WindowSelectBigCanvas_SE AddElement(string ind, Sprite icon = null)
+        public WindowSelectBigCanvas_SE AddElement(string ind, OptionInputBigSelect_SE data = null)
         {
             ElementWindowSelectBigCanvas element = Instantiate(templateElement.gameObject, container).GetComponent<ElementWindowSelectBigCanvas>();
-            
-            element.transform.Find("_text").GetComponent<TMPro.TextMeshProUGUI>().text = ind;
-
-            if (icon != null)
-            {
-                element.transform.Find("_icon").GetComponent<Image>().sprite = icon;
-            }
+           
 
             element.ind = ind;
             element.myCallbackCanvas = this;
+
+            element.data  = data;
+            element.Render();
             return this;
         }
 

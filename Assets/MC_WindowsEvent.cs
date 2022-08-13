@@ -41,6 +41,7 @@ namespace MCoder.UI
             }
             return null;
         }
+
         public void SelectEvent(int N)
         {
             coderSctipt.EventSelect(N);
@@ -101,8 +102,17 @@ namespace MCoder.UI
 
         }
 
+        internal void HideAllError()
+        {
+            for (int i = 0; i < container.childCount; i++)
+            {
+                container.GetChild(i).GetComponent<MC_Event_Element>().SetVisibleError(false);
+            }
+        }
+
         internal void ShowErrorIn(int eventLin)
         {
+        
             MC_Event_Element e =  GetElementById(eventLin);
             if (e == null) return;
            e.SetVisibleError(true);

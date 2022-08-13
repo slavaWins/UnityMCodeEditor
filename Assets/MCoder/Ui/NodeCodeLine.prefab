@@ -543,7 +543,7 @@ MonoBehaviour:
   myGhostDragibleCline: {fileID: 0}
   targetDropClass: {fileID: 0}
   argumentsInputsList: []
-  argumentInput: {fileID: 2804917584942149740, guid: f69419bd005b0684695f85769ae7b047, type: 3}
+  argumentInputPrefab: {fileID: 6496236901752073204, guid: f69419bd005b0684695f85769ae7b047, type: 3}
   lineNumber: 0
   h1: {fileID: 2873223518119740693}
   small: {fileID: 4989202238882496313}

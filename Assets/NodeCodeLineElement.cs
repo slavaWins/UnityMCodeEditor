@@ -12,7 +12,7 @@ namespace MCoder.UI
     {
 
         public List<TMP_InputField> argumentsInputsList;
-        public GameObject argumentInput;
+        public UMC_Element_Argument argumentInputPrefab;
         internal MC_BaseNodeElement nodeClass;
         internal MC_Coder_Script callbackPanel;
          
@@ -79,6 +79,7 @@ namespace MCoder.UI
         public void OnEndEditArgumentText(string x)
         {
             Debug.Log("OnEndEditArgumentText " + x );
+            ReadInput();
             callbackPanel.Render();
         }
 
@@ -97,12 +98,17 @@ namespace MCoder.UI
             foreach( MC_Argument arg in nodeClass.arguments)
             {
                 i++;
-                //Debug.Log(arg.name);
-                GameObject go =  Instantiate(argumentInput, transform);
-                go.transform.Find("_h1").GetComponent<TMP_Text>().text = arg.name ;
-                go.transform.Find("_type").GetComponent<TMP_Text>().text =  arg.myType.ToString().Replace("_","");
+               
 
-                TMP_InputField inp =  go.transform.Find("_inpt").GetComponent<TMP_InputField>();
+                UMC_Element_Argument go =  Instantiate(argumentInputPrefab.gameObject, transform).GetComponent<UMC_Element_Argument>();
+                go.argument = arg;
+                go.classParent = this;
+                go.nodeClass = nodeClass;
+                go.Render();
+
+               
+
+                TMP_InputField inp =  go.inp;
 
                 inputslist.Add(inp);
                 inp.text = "";
@@ -110,7 +116,7 @@ namespace MCoder.UI
                 {
                     inp.text = nodeClass.values[i].ToString();
                 }
-                inp.onEndEdit.AddListener(OnEndEditArgumentText);
+                
 
                 argumentsInputsList.Add(inp);
 

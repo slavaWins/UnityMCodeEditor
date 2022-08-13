@@ -55,7 +55,8 @@ namespace MCoder.Libary
             supportBodyType = new List<BodyTypeEnum>() { BodyTypeEnum.item, BodyTypeEnum.mob, BodyTypeEnum.block };
             arguments = new List<MC_Argument>()
                 {
-                    new MC_Argument(){myType=MC_ArgumentTypeEnum._player, name = "Player"},
+                    new MC_Argument(){myType=MC_ArgumentTypeEnum._player, name = "Player" , def=new ExampleBody()},
+                    new MC_Argument(){myType=MC_ArgumentTypeEnum._int, name = "Distance", def=3 },
                 };
         }
       
@@ -72,7 +73,7 @@ namespace MCoder.Libary
             supportBodyType = new List<BodyTypeEnum>() { BodyTypeEnum.mob, BodyTypeEnum.block };
             arguments = new List<MC_Argument>()
                 {
-                    new MC_Argument(){myType=MC_ArgumentTypeEnum._body, name = "BodyPlayerOrMob"},
+                    new MC_Argument(){myType=MC_ArgumentTypeEnum._body, name = "BodyHit" , def=new ExampleBody()},
                 };
         }
 

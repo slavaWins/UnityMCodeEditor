@@ -25,6 +25,7 @@ namespace MCoder
     {
         public string name = "varible";
         public MC_ArgumentTypeEnum myType;
+        public object def;
     }
 
 

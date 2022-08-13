@@ -9,6 +9,21 @@ using static MCoder.MC_BaseInstance;
 namespace MCoder
 {
 
+    public enum MC_Value_LinkType
+    {
+        _none,
+        _event,
+        _input,
+        _custom
+
+    }
+    public class MC_Value
+    {
+        public object val;
+        public MC_Value_LinkType linkType;
+        public int linkId;
+    }
+
     
   public interface IMC_SupportBodyType
     {

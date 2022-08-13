@@ -5,6 +5,14 @@ using UnityEngine.UI;
 
 namespace SEditor
 {
+    public class OptionInputBigSelect_SE
+    {
+        public string title;
+        public string descr;
+        public string tab;
+        public Sprite icon;
+    }
+
     public class inputBigSelect_SE : Component_SE<string>, IInputComponent, ITakeValueFromSelector_SE
     {
 
@@ -17,7 +25,20 @@ namespace SEditor
         public Text myValVisible;
         public Image mySpriteVisible;
 
-        public Dictionary<string, Sprite> options = new Dictionary<string, Sprite> ();
+        public Dictionary<string, OptionInputBigSelect_SE> options = new Dictionary<string, OptionInputBigSelect_SE> ();
+
+        public void SetOptionByIndSprite(Dictionary<string, Sprite> dic)
+        {
+            options.Clear();
+            foreach(var item in dic)
+            {
+                options.Add(item.Key, new OptionInputBigSelect_SE()
+                {
+                    title = item.Key,
+                    icon = item.Value,
+                });
+            }
+        }
 
         public string GetValueAsString()
         {
@@ -39,9 +60,10 @@ namespace SEditor
 
             mySpriteVisible.sprite = null;
             if (val == null) return;
+
             if (options.ContainsKey(val))
             {
-                mySpriteVisible.sprite = options[val];
+                mySpriteVisible.sprite = options[val].icon;
             }
 
         }
