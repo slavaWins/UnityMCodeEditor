@@ -13,10 +13,16 @@ namespace SEditor
         public Sprite icon;
     }
 
+    public interface ICallbackInputBigSelect_SE
+    {
+        public void SelectValueFromSelector(string ind);
+    }
+
     public class inputBigSelect_SE : Component_SE<string>, IInputComponent, ITakeValueFromSelector_SE
     {
 
 
+        public ICallbackInputBigSelect_SE callbackClass;
         public Button backFiledButton;
 
         [HideInInspector]
@@ -51,6 +57,10 @@ namespace SEditor
         {
             val = ind;
             Render();
+            if (callbackClass != null)
+            {
+                callbackClass.SelectValueFromSelector(ind);
+            }
         }
 
         public override void Render()

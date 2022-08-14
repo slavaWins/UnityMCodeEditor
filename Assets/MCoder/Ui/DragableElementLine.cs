@@ -53,7 +53,7 @@ namespace MCoder.UI
 
 
 
-        internal virtual void OnDragStop()
+        internal virtual void OnDragStop(PointerEventData eventData=null)
         {
 
         }
@@ -177,7 +177,7 @@ namespace MCoder.UI
             Debug.Log(eventData.pointerDrag);
             Debug.Log(eventData.pointerCurrentRaycast);
             */
-            OnDragStop();
+            OnDragStop(eventData);
 
             Destroy(myGhostDragibleCline.gameObject);
 

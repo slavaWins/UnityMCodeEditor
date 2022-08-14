@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 using MCoder;
 using TMPro;
+using UnityEngine.EventSystems;
 
 namespace MCoder.UI
 {
@@ -196,7 +197,7 @@ namespace MCoder.UI
 
     
 
-        internal override void OnDragStop()
+        internal override void OnDragStop(PointerEventData eventData = null)
         {
             base.OnDragStop();
             if (addHere != null) Destroy(addHere);

@@ -194,7 +194,7 @@ public class MC_VaribleElement : DragableElementLine<UMC_Element_Argument>, ICal
             if (addHere != null) Destroy(addHere); 
     }
 
-    internal override void OnDragStop()
+    internal override void OnDragStop(PointerEventData eventData=null)
     {
         base.OnDragStop();
         if (addHere != null) Destroy(addHere);
