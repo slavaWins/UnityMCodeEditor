@@ -29,6 +29,9 @@ public class MC_Event_Element : MonoBehaviour
     void Start()
     {
         GetComponent<Button>().onClick.AddListener(Click);
+
+
+        
     }
 
     // Update is called once per frame
@@ -43,7 +46,9 @@ public class MC_Event_Element : MonoBehaviour
 
         h1.text = eventClass.title;
         small.text = eventClass.descr;
+        ShowTooltip.Create(this.gameObject, eventClass.descr);
     }
+
     internal void SetVisibleError(bool val)
     {
         showError.gameObject.SetActive(val);

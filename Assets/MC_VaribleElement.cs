@@ -27,6 +27,7 @@ public class MC_VaribleElement : DragableElementLine<UMC_Element_Argument>, ICal
 
     [Header("Inner")]
     public TMP_Text title;
+    public TMP_InputField _inpName;
     public TMP_Text _typeText;
     public InputDropdownComponent_SE inpSelectType;
 
@@ -45,18 +46,42 @@ public class MC_VaribleElement : DragableElementLine<UMC_Element_Argument>, ICal
 
        if(isCanEditType)CreateInputSelectType();
 
+        title.gameObject.SetActive(!isCanEditType);
+        _inpName.gameObject.SetActive(isCanEditType);
+
+        if (isCanEditType)
+        {
+            _inpName.text = argument.name;
+        }
+
         title.text = argument.name;
         _typeText.text = argument.myType.ToString();
 
         GetComponent<Image>().color = MC_Colors.GetColorByType(argument.myType);
+
+
     }
 
 
     void Start()
     {
-       
+        if (argument == null) return;
+        ShowTooltip.Create(this.gameObject, "оЕПЕЛЕММЮЪ " + argument.name + " :" + _typeText.text, MC_DocHelp.GetInfoByLinkType(myLinkType).descr);
+
+        _inpName.onEndEdit.AddListener(OnEditName);
     }
 
+    private void OnEditName(string arg0)
+    {
+        if (!isCanEditType) return;
+
+        argument.name = _inpName.text;
+        argument.name = argument.name.Replace(" ", "");
+        if (argument.name.Trim().Length == 0) argument.name = "Varible";
+        
+
+        callbackWindow.codeScript.Render();
+    }
 
     void CreateInputSelectType()
     {
@@ -113,16 +138,16 @@ public class MC_VaribleElement : DragableElementLine<UMC_Element_Argument>, ICal
 
 
 
-        if (targetDropClass.argument.myType != argument.myType)
+        if (targetDropClass.argument.myType == argument.myType || (argument.myType == MC_ArgumentTypeEnum._any || targetDropClass.argument.myType == MC_ArgumentTypeEnum._any))
         {
-            addHere.GetComponent<Image>().color = new Color32(129,20,36,255);
-            addHere.transform.Find("_text").GetComponent<TMP_Text>().text = "ме ондундхр рхо";
-        }
-        else
-        { 
             addHere.GetComponent<Image>().color = GetComponent<Image>().color;
 
-            addHere.transform.Find("_text").GetComponent<TMP_Text>().text = "ондундхр!";
+            addHere.transform.Find("_text").GetComponent<TMP_Text>().text = "ондундхр!"; 
+        }
+        else
+        {
+            addHere.GetComponent<Image>().color = new Color32(129, 20, 36, 255);
+            addHere.transform.Find("_text").GetComponent<TMP_Text>().text = "ме ондундхр рхо";
         }
     }
 
@@ -147,7 +172,16 @@ public class MC_VaribleElement : DragableElementLine<UMC_Element_Argument>, ICal
 
     private void AddLinkToElementArgumentValue(UMC_Element_Argument targetDropClass)
     {
-        if (targetDropClass.argument.myType != argument.myType) return;
+
+        if (targetDropClass.argument.myType == argument.myType || (argument.myType == MC_ArgumentTypeEnum._any || targetDropClass.argument.myType == MC_ArgumentTypeEnum._any))
+        {
+
+        }
+        else
+        {
+            return;
+        }
+
 
         targetDropClass.meValue.linkType = myLinkType;
         targetDropClass.meValue.linkId = myId;

@@ -13,8 +13,8 @@ namespace MCoder.UI
 
         public List<TMP_InputField> argumentsInputsList;
         public UMC_Element_Argument argumentInputPrefab;
-        internal MC_BaseNodeElement nodeClass;
-        internal MC_Coder_Script callbackPanel;
+        public MC_BaseNodeElement nodeClass;
+        public MC_Coder_Script callbackPanel;
          
 
         public int lineNumber;

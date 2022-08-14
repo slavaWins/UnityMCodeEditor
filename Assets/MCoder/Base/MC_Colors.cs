@@ -11,12 +11,13 @@ namespace MCoder
     {
         public static Color32 GetColorByType(MC_ArgumentTypeEnum eType)
         {
-            Color32 col = new Color32(22, 33, 22, 1);
+            Color32 col = new Color32(22, 33, 22, 255);
 
             if (eType == MC_ArgumentTypeEnum._int) col = new Color32(31, 80, 206, 255);
             if (eType == MC_ArgumentTypeEnum._player) col = new Color32(16, 115, 128, 255);
             if (eType == MC_ArgumentTypeEnum._body) col = new Color32(128, 124, 16, 255);
             if (eType == MC_ArgumentTypeEnum._string) col = new Color32(119, 31, 206, 255); 
+            if (eType == MC_ArgumentTypeEnum._any) col = new Color32(119, 81, 116, 255); 
 
             return col;
         }

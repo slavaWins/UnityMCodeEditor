@@ -15,10 +15,12 @@ namespace MCoder
     }
     public enum MC_ArgumentTypeEnum
     {
+        _any,
         _int,
         _string,
         _body,
         _player,
+        
     }
 
     public class MC_Argument
@@ -207,7 +209,8 @@ namespace MCoder
 
         /// <summary>Это положение тела</summary>
         public Vector3 pos = new Vector3(0,0,0);
-         
+        internal bool isBlock;
+
 
 
         /// <summary>Нанести урон</summary>

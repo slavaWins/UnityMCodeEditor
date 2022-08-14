@@ -56,8 +56,14 @@ public class UMC_Element_Argument : MonoBehaviour
 
         if (meValue.linkType != MC_Value_LinkType._none)
         {
-            
+
             fromVaribleName.text = meValue.linkType.ToString();
+
+            if (meValue.linkType == MC_Value_LinkType._event) fromVaribleName.text = nodeClass.parentModule.myEvent.arguments[meValue.linkId].name;
+            if (meValue.linkType == MC_Value_LinkType._custom) fromVaribleName.text = classParent.callbackPanel.mC_BaseInstance.argumentsCustoms[meValue.linkId].name;
+            if (meValue.linkType == MC_Value_LinkType._input) fromVaribleName.text = classParent.callbackPanel.mC_BaseInstance.argumentsInputs[meValue.linkId].name;
+            
+              
             fromVaribleType.text = argument.myType.ToString().Replace("_","");
             fromVaribleName.transform.parent.GetComponent<Image>().color = MC_Colors.GetColorByType(argument.myType);
         }

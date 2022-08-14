@@ -52,6 +52,25 @@ namespace MCoder.Libary
 
 
 
+ 
+    public class MC_If_ItemBlock : MC_BaseNodeElement, IMCoder_If
+    {
+        
+        public MC_If_ItemBlock()
+        {
+            name = "Если предмет является блоком";
+            iconText = "ЕСЛИ";
+            descr = "Если предмет является блоком";
+            supportBodyType = new List<BodyTypeEnum>() { BodyTypeEnum.item };
+        }
+
+        public bool Check()
+        {
+            return exampleBody.isBlock ;
+        }
+    }
+
+
     //Если есть хп
     public class MC_TrigerIfNoDie : MC_BaseNodeElement, IMCoder_If
     {
@@ -69,5 +88,67 @@ namespace MCoder.Libary
             return exampleBody.hp > 0;
         }
     }
+
+    public class MC_If_VaribleEquals_Any : MC_BaseNodeElement, IMCoder_If
+    {
+
+        public MC_If_VaribleEquals_Any()
+        {
+            arguments = new List<MC_Argument>()
+                {
+                    new MC_Argument(){myType=MC_ArgumentTypeEnum._any, name = "One"},
+                    new MC_Argument(){myType=MC_ArgumentTypeEnum._any, name = "Two"},
+                };
+
+            name = "Если";
+            iconText = "==";
+            descr = "Если переменнная ANY равна чему-то";
+            supportBodyType = new List<BodyTypeEnum>() { BodyTypeEnum.item, BodyTypeEnum.mob, BodyTypeEnum.block };
+        }
+
+        public bool Check()
+        {
+            return GetValueAsObject(0) == GetValueAsObject(1);
+        }
+    }
+    public class MC_TwoVaribleEqual : MC_BaseNodeElement, IMCoder_If
+    {
+
+        public MC_TwoVaribleEqual()
+        {
+            arguments = new List<MC_Argument>()
+                {
+                    new MC_Argument(){myType=MC_ArgumentTypeEnum._any, name = "One"},
+                    new MC_Argument(){myType=MC_ArgumentTypeEnum._any, name = "Two"},
+                };
+
+            name = "=";
+            iconText = "=";
+            descr = "Приравнять переменные";
+            supportBodyType = new List<BodyTypeEnum>() { BodyTypeEnum.item, BodyTypeEnum.mob, BodyTypeEnum.block };
+        }
+        public override MC_Error Validate()
+        {
+            MC_Error error =  base.Validate();
+            if (error != null) return error;
+
+            if (values[0].linkType != MC_Value_LinkType._custom) return new MC_Error("Можно менять только custom переменные!").SelectArgument(0);
+            return null;
+        }
+
+        public override bool Check()
+        {
+            if (values[0].linkType != MC_Value_LinkType._custom) return false;
+            return true;
+        }
+
+        public override bool Call(object arg0 = null, object arg1 = null)
+        {
+            Debug.Log("это не точно! Возможно хуйню спорол");
+            values[0].val = GetValueAsObject(1);
+            return true;
+        }
+    }
+     
 
 }

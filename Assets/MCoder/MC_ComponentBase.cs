@@ -21,6 +21,10 @@ namespace MCoder
     {
         public object val;
         public MC_Value_LinkType linkType;
+
+        /// <summary>
+        /// Ид аргумент от нуля
+        /// </summary>
         public int linkId;
 
         public MC_Value (object _val = null)
@@ -62,6 +66,21 @@ namespace MCoder
         public bool IsSupportBodyType(BodyTypeEnum val)
         {
             return supportBodyType.Contains(val);
+        }
+
+        public object GetValueAsObject(int argNumber)
+        {
+
+            if (arguments.Count - 1 < argNumber)
+            {
+                Debug.LogError(" Нет аргумента " + argNumber);
+                return null;
+            }
+
+            object val = values[argNumber].val;
+
+             
+            return val;
         }
 
         public int GetValueAsInt(int argNumber)
@@ -167,29 +186,22 @@ namespace MCoder
                         }
                     }
 
-                    if (values[i].linkType == MC_Value_LinkType._custom)
+                    if (values[i].linkType != MC_Value_LinkType._none)
                     {
-                        if (mC_BaseInstance.argumentsCustoms[values[i].linkId].myType != arg.myType)
+                        MC_Argument _ma = null;
+                        if (values[i].linkType == MC_Value_LinkType._custom) _ma = mC_BaseInstance.argumentsCustoms[values[i].linkId];
+                        if (values[i].linkType == MC_Value_LinkType._input) _ma = mC_BaseInstance.argumentsInputs[values[i].linkId];
+                        if (values[i].linkType == MC_Value_LinkType._event) _ma = parentModule.myEvent.arguments[values[i].linkId];
+
+
+                        if (_ma.myType != arg.myType && _ma.myType != MC_ArgumentTypeEnum._any && arg.myType != MC_ArgumentTypeEnum._any)
                         {
-                            return new MC_Error("Не сходится тип custom переменной в  " + arg.name + "").SelectArgument(i);
+                            return new MC_Error("Не сходится тип " + values[i].linkType.ToString() + " переменной в  " + arg.name + ""
+                                + ". Приходит " + _ma.myType.ToString() + " а нужно " + arg.myType).SelectArgument(i);
                         }
                     }
 
-                    if (values[i].linkType == MC_Value_LinkType._input)
-                    {
-                        if (mC_BaseInstance.argumentsInputs[values[i].linkId].myType != arg.myType)
-                        {
-                            return new MC_Error("Не сходится тип input переменной в  " + arg.name + "").SelectArgument(i);
-                        }
-                    }
-                    
-                    if (values[i].linkType == MC_Value_LinkType._event)
-                    {
-                        if  (parentModule.myEvent.arguments[values[i].linkId].myType != arg.myType)
-                        {
-                            return new MC_Error("Не сходится тип event переменной в  " + arg.name + ". Приходит " + parentModule.myEvent.arguments[values[i].linkId].myType.ToString()  +" а нужно " + arg.myType).SelectArgument(i);
-                        }
-                    }
+ 
                     
 
                     if (arg.myType == MC_ArgumentTypeEnum._int)

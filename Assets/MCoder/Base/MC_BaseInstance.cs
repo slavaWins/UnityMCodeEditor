@@ -7,24 +7,28 @@ using MCoder.Libary;
 
 namespace MCoder
 {
+    [System.Serializable]
     public class MC_Save_EventModule_Node
     {
         public string ind;
         public List<MC_Value> values = new List<MC_Value>();
     }
 
+    [System.Serializable]
     public class MC_Save_EventModule
     {
         
         public List<MC_Save_EventModule_Node> nodes = new List<MC_Save_EventModule_Node>();
     }
 
+
+    [System.Serializable]
     public class MC_Save_Instance
     { 
-        public Dictionary<string, MC_Save_EventModule> nodesForEvents;
+        public Dictionary<string, MC_Save_EventModule> nodesForEvents = new Dictionary<string, MC_Save_EventModule>();
 
     }
-
+    
     public static class MCoderExport
     {
         public static bool SetData(this MC_BaseInstance self, MC_Save_Instance toData)
@@ -77,12 +81,13 @@ namespace MCoder
                     MC_Save_EventModule_Node saveNode =  new MC_Save_EventModule_Node();
                     
                     saveNode.ind = lnd.GetType().ToString();
-                    saveNode.values = lnd.values;
+                   // saveNode.values = lnd.values;
 
 
                     module.nodes.Add(saveNode);
                 }
 
+                Debug.Log(module);
                 save.nodesForEvents.Add(moduleNode.myEvent.GetEventInd(), module);
             }
 

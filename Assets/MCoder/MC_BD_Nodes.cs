@@ -48,6 +48,9 @@ namespace MCoder
         public static List<MC_BaseNodeElement> GetAllNodesList()
         {
             List<MC_BaseNodeElement> nodesList2 = new List<MC_BaseNodeElement>();
+            nodesList2.Add(new MC_TwoVaribleEqual()); 
+            nodesList2.Add(new MC_If_VaribleEquals_Any()); 
+            nodesList2.Add(new MC_If_ItemBlock());
             nodesList2.Add(new MC_TrigerIfNoDie());
             nodesList2.Add(new DamageSelf_ActionNode());
             nodesList2.Add(new ConsoleWrite_ActionNode());

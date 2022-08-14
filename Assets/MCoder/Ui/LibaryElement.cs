@@ -15,7 +15,7 @@ namespace MCoder.UI
         internal MC_Coder_Script coderMNodePanel;
 
         internal MC_BaseNodeElement nodeClass;
-        internal NodeLibaryPanel callbackPanel;
+        internal UMC_WindowLibary callbackPanel;
 
         public GameObject addHerePrefab;
         GameObject addHere;

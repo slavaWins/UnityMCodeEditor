@@ -32,7 +32,7 @@ public class TooltipController : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log(eventData.pointerEnter);
+       
 
     }
 
@@ -63,7 +63,7 @@ public class TooltipController : MonoBehaviour, IPointerEnterHandler, IPointerEx
     }
     public void ShowThe(string _title, string _descr)
     {
-
+        goTooltip.SetActive(true);
 
         txtTitle.text = _title;
 
@@ -92,18 +92,23 @@ public class TooltipController : MonoBehaviour, IPointerEnterHandler, IPointerEx
     }
 
     public void OnPointerMove(PointerEventData eventData)
-    {
-        ShowTooltip ST = eventData.pointerEnter.GetComponent<ShowTooltip>();
-       /// Debug.Log("=======");
-       // Debug.Log(eventData.pointerEnter);
-       // Debug.Log(eventData.pointerCurrentRaycast);
-        
+    { 
+        if (eventData.pointerEnter == null) return;
 
+        ShowTooltip ST = eventData.pointerEnter.GetComponent<ShowTooltip>(); 
+
+
+        if (ST == null)
+        {
+            
+            ST = eventData.pointerEnter.transform.parent.GetComponent<ShowTooltip>();
+
+        }
         if (ST == null)
         {
             Hide();
             return;
-        }
+        } 
         Show(ST.title, ST.descr);
         MoveToMose();
     }

@@ -15,19 +15,29 @@ namespace MCoder.UI
     public class MC_Coder_Script : MonoBehaviour, ICallbackInputDropDown
     {
 
+        [Header("Open data")]
+    
+
+
+
         [Header("Integrate Windows")]
         public MC_WindowVarible windowVarible;
         public MC_WindowsEvent windowsEvent;
+        public UMC_WindowLibary windowLibart;
+        public UMC_StorageScripts winSave;
 
         [Header("Integrate Other ")]
         public TMP_Text errorText;
 
         [Header("Inner")]
         public Transform container;
+        public Button btnSave;
+        public Button btnLoad;
+        public TMP_InputField inpName;
 
 
         [Header("Prefabs")]
-        public NodeCodeLineElement elementPrefab; 
+        public NodeCodeLineElement elementPrefab;
         public int currentEventNumber = 0;
 
         [Header("Others")]
@@ -35,7 +45,7 @@ namespace MCoder.UI
 
         public List<NodeCodeLineElement> Nodes = new List<NodeCodeLineElement>();
 
- public MC_BaseInstance mC_BaseInstance = new ExampleInstanceDamageIfClick();
+        public MC_BaseInstance mC_BaseInstance = new ExampleInstanceDamageIfClick();
 
         internal void EventCreate(MC_Base_Event plusEvent)
         {
@@ -56,7 +66,7 @@ namespace MCoder.UI
 
         }
 
-       
+
 
 
         internal void MoveLine(int from, int postLine)
@@ -90,7 +100,7 @@ namespace MCoder.UI
             }
             mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes.Clear();
             mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes = logicnodes;
-            Render(); 
+            Render();
 
         }
 
@@ -150,13 +160,13 @@ namespace MCoder.UI
 
         public NodeCodeLineElement GetNodeLineElementByLine(int lineNumber)
         {
-            int J=-1;
+            int J = -1;
             for (int i = 0; i < container.childCount; i++)
             {
                 GameObject go = container.GetChild(i).gameObject;
                 if (!go.GetComponent<NodeCodeLineElement>()) continue;
                 J++;
-                
+
                 NodeCodeLineElement line = go.GetComponent<NodeCodeLineElement>();
                 if (J == lineNumber)
                 {
@@ -165,8 +175,8 @@ namespace MCoder.UI
             }
             return null;
         }
-    
-        public void RenderVaribles( )
+
+        public void RenderVaribles()
         {
             windowVarible.ClearAll();
 
@@ -178,7 +188,7 @@ namespace MCoder.UI
                 windowVarible.AddVarible(L, lgn, MC_Value_LinkType._event, false);
             }
 
-              L = -1;
+            L = -1;
             foreach (MC_Argument lgn in mC_BaseInstance.argumentsCustoms)
             {
                 L++;
@@ -186,7 +196,7 @@ namespace MCoder.UI
             }
 
 
-              L = -1;
+            L = -1;
             foreach (MC_Argument lgn in mC_BaseInstance.argumentsInputs)
             {
                 L++;
@@ -197,8 +207,9 @@ namespace MCoder.UI
         public void Render()
         {
 
+       
 
-           // Debug.Log("==Render");
+            // Debug.Log("==Render");
             // ReadInputs();
             SEditor.FormBuilder.ClearAllChildren(container);
 
@@ -218,8 +229,8 @@ namespace MCoder.UI
                     showwErrorInLine = error.lineLogic;
                 }
             }
-            
-                int L = -1;
+
+            int L = -1;
             foreach (MC_BaseNodeElement lgn in mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes)
             {
                 L++;
@@ -228,7 +239,7 @@ namespace MCoder.UI
                 go.lineNumber = L;
                 go.nodeClass = lgn;
                 go.callbackPanel = this;
-               
+
                 if (lgn.isType_END()) padding -= 1;
                 go.SetPadding(padding);
                 go.Render();
@@ -242,14 +253,14 @@ namespace MCoder.UI
 
                 if (lgn.isType_IF()) padding += 1;
 
-              
+
             }
             RenderVaribles();
             windowsEvent.HideAllError();
             CheckAndDrawError();
 
             StartCoroutine(container.GetComponent<VerticalLayoutGroup>().ChangeUpdate());
-             
+
         }
 
         void CheckAndDrawError()
@@ -262,7 +273,7 @@ namespace MCoder.UI
             errorText.text = error.text;
 
 
-           // Debug.Log("eventLin errror " + error.eventLin);
+            // Debug.Log("eventLin errror " + error.eventLin);
             windowsEvent.ShowErrorIn(error.eventLin);
 
             /*
@@ -298,7 +309,20 @@ namespace MCoder.UI
             selectBodyTypeForScript.SetValue((int)mC_BaseInstance.bodyType);
 
 
+            btnSave.onClick.AddListener(SaveFile);
+            btnLoad.onClick.AddListener(LoadFile);
             Render();
+        }
+
+        private void LoadFile()
+        {
+            winSave.gameObject.SetActive(true);
+        }
+        private void SaveFile()
+        {
+            UMC_StorageScripts.SaveScript(inpName.text, MCoderExport.GetData(mC_BaseInstance));
+            
+
         }
 
         // Update is called once per frame
@@ -309,9 +333,12 @@ namespace MCoder.UI
 
         public void SetOptionFromSelect(int id, string ind, InputDropdownComponent_SE from)
         {
-            if (from == selectBodyTypeForScript) {
+            if (from == selectBodyTypeForScript)
+            {
                 mC_BaseInstance.bodyType = (BodyTypeEnum)id;
+                windowLibart.SetBodyType(mC_BaseInstance.bodyType);
                 Render();
+
             }
 
         }
