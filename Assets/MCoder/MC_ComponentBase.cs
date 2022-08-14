@@ -14,18 +14,35 @@ namespace MCoder
         _none,
         _event,
         _input,
-        _custom
-
+        _custom,
+        _save
     }
+   
+
     public class MC_Value
     {
         public object val;
         public MC_Value_LinkType linkType;
 
-        /// <summary>
-        /// Ид аргумент от нуля
-        /// </summary>
+        /// <summary> Ид аргумент от нуля </summary>
         public int linkId;
+
+        
+        public void FromExport(MC_Value_SaveExport _import)
+        {
+            val=(_import.val);
+            linkId=(_import.linkId);
+            linkType = _import.linkType;
+        }
+        public MC_Value_SaveExport ToExport()
+        {
+            return new MC_Value_SaveExport()
+            {
+                val = val,
+                linkType = linkType,    
+                linkId = linkId,
+            };
+        }
 
         public MC_Value (object _val = null)
         {
@@ -189,6 +206,7 @@ namespace MCoder
                     if (values[i].linkType != MC_Value_LinkType._none)
                     {
                         MC_Argument _ma = null;
+                        if (values[i].linkType == MC_Value_LinkType._save) _ma = mC_BaseInstance.argumentsSave[values[i].linkId];
                         if (values[i].linkType == MC_Value_LinkType._custom) _ma = mC_BaseInstance.argumentsCustoms[values[i].linkId];
                         if (values[i].linkType == MC_Value_LinkType._input) _ma = mC_BaseInstance.argumentsInputs[values[i].linkId];
                         if (values[i].linkType == MC_Value_LinkType._event) _ma = parentModule.myEvent.arguments[values[i].linkId];

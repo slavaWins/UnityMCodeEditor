@@ -20,9 +20,11 @@ namespace MCoder.UI
 
         public static void SaveScript(string name,  MC_Save_Instance data)
         {
-            Debug.Log("Save scr " + name);
+            name = name.Replace(".json","");
+
             if (!Directory.Exists(GetFoolder())) Directory.CreateDirectory(GetFoolder());
             string j = JsonNet.Serialize(data);
+
             File.WriteAllText(GetFoolder()+"/"+name+".json", j);
         }
 
@@ -69,7 +71,7 @@ namespace MCoder.UI
             foreach (var item in listScripts)
             {
                 UMC_File_Element element = Instantiate(elementPrefab.gameObject, container).GetComponent<UMC_File_Element>();
-                element._name.text = item.Key;
+                element._name.text = item.Key.Replace(".json", "");
                 element.callbackClass = this;
                 element.ind = item.Key;
             }
@@ -82,11 +84,11 @@ namespace MCoder.UI
         }
 
         internal void ClickInd(string ind)
-        {
-            winCode.inpName.text = ind;
+        { 
+            winCode.inpName.text = ind.Replace(".json", "");
             winCode.mC_BaseInstance = new MC_BaseInstance(); 
             MCoderExport.SetData(winCode.mC_BaseInstance, listScripts[ind]);
-            winCode.Render();
+            winCode.OnLoadFile();
             gameObject.SetActive(false);
         }
     }

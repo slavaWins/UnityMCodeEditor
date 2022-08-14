@@ -61,6 +61,7 @@ public class UMC_Element_Argument : MonoBehaviour
 
             if (meValue.linkType == MC_Value_LinkType._event) fromVaribleName.text = nodeClass.parentModule.myEvent.arguments[meValue.linkId].name;
             if (meValue.linkType == MC_Value_LinkType._custom) fromVaribleName.text = classParent.callbackPanel.mC_BaseInstance.argumentsCustoms[meValue.linkId].name;
+            if (meValue.linkType == MC_Value_LinkType._save) fromVaribleName.text = classParent.callbackPanel.mC_BaseInstance.argumentsSave[meValue.linkId].name;
             if (meValue.linkType == MC_Value_LinkType._input) fromVaribleName.text = classParent.callbackPanel.mC_BaseInstance.argumentsInputs[meValue.linkId].name;
             
               

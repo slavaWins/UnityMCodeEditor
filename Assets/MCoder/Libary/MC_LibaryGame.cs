@@ -132,13 +132,13 @@ namespace MCoder.Libary
             MC_Error error =  base.Validate();
             if (error != null) return error;
 
-            if (values[0].linkType != MC_Value_LinkType._custom) return new MC_Error("Можно менять только custom переменные!").SelectArgument(0);
+            if (values[0].linkType != MC_Value_LinkType._custom && values[0].linkType != MC_Value_LinkType._save) return new MC_Error("Можно менять только custom и save переменные!").SelectArgument(0);
             return null;
         }
 
         public override bool Check()
         {
-            if (values[0].linkType != MC_Value_LinkType._custom) return false;
+            if (values[0].linkType != MC_Value_LinkType._custom && values[0].linkType != MC_Value_LinkType._save) return false;
             return true;
         }
 

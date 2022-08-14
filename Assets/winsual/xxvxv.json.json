@@ -1,1 +1,0 @@
-{"nodesForEvents":{"MCoder.Libary.MC_Event_InteractClick":{"nodes":[{"ind":"MCoder.Libary.MC_TrigerIfNoDie","values":[]},{"ind":"MCoder.Libary.MC_NodeIfEnd","values":[]},{"ind":"MCoder.Libary.DamageSelf_ActionNode","values":[]},{"ind":"MCoder.Libary.ConsoleWrite_ActionNode","values":[]},{"ind":"MCoder.Libary.ConsoleWrite_ActionNode","values":[]}]}}}

@@ -8,10 +8,19 @@ using MCoder.Libary;
 namespace MCoder
 {
     [System.Serializable]
+    public class MC_Value_SaveExport
+    {
+
+        public object val;
+        public MC_Value_LinkType linkType;
+        public int linkId;
+    }
+
+    [System.Serializable]
     public class MC_Save_EventModule_Node
     {
         public string ind;
-        public List<MC_Value> values = new List<MC_Value>();
+        public List<MC_Value_SaveExport> values = new List<MC_Value_SaveExport>();
     }
 
     [System.Serializable]
@@ -24,7 +33,10 @@ namespace MCoder
 
     [System.Serializable]
     public class MC_Save_Instance
-    { 
+    {
+        public List<MC_Argument> argumentsSave = new List<MC_Argument>();
+        public List<MC_Argument> argumentsCustoms = new List<MC_Argument>();
+        public List<MC_Argument> argumentsInputs = new List<MC_Argument>();
         public Dictionary<string, MC_Save_EventModule> nodesForEvents = new Dictionary<string, MC_Save_EventModule>();
 
     }
@@ -34,7 +46,9 @@ namespace MCoder
         public static bool SetData(this MC_BaseInstance self, MC_Save_Instance toData)
         {
 
-
+            self.argumentsSave = toData.argumentsSave;
+            self.argumentsCustoms = toData.argumentsCustoms;
+            self.argumentsInputs = toData.argumentsInputs;
             foreach (var modulesSave in toData.nodesForEvents)
             {
                 MC_NodeEventModule moduleNode = new MC_NodeEventModule(BodyTypeEnum.block);
@@ -51,7 +65,13 @@ namespace MCoder
                 foreach (MC_Save_EventModule_Node nodesSave in modulesSave.Value.nodes)
                 {
                     MC_BaseNodeElement node = MC_BD_Nodes.GetLineByInd(nodesSave.ind);
-                    node.values = nodesSave.values;
+                    
+                    foreach(var item in nodesSave.values)
+                    {
+                        MC_Value VALUE = new MC_Value();
+                        VALUE.FromExport(item);
+                        node.values.Add(VALUE);
+                    }
                     moduleNode.logicnodes.Add(node);
                 }
 
@@ -67,6 +87,9 @@ namespace MCoder
         {
             MC_Save_Instance save = new MC_Save_Instance();
 
+            save.argumentsSave = obj.argumentsSave;
+            save.argumentsCustoms = obj.argumentsCustoms;
+            save.argumentsInputs = obj.argumentsInputs;
 
             foreach (MC_NodeEventModule moduleNode in obj.nodesForEvents)
             {
@@ -81,7 +104,12 @@ namespace MCoder
                     MC_Save_EventModule_Node saveNode =  new MC_Save_EventModule_Node();
                     
                     saveNode.ind = lnd.GetType().ToString();
-                   // saveNode.values = lnd.values;
+                    
+
+                    foreach (var item in lnd.values)
+                    {
+                        saveNode.values.Add(item.ToExport());
+                    }
 
 
                     module.nodes.Add(saveNode);
@@ -113,6 +141,7 @@ namespace MCoder
 
         public List<MC_Argument> argumentsCustoms = new List<MC_Argument>();
         public List<MC_Argument> argumentsInputs = new List<MC_Argument>();
+        public List<MC_Argument> argumentsSave = new List<MC_Argument>();
 
         /// <summary>Список модулей инстанса. Модуль это скрипты из нодов, и событие при котором это всё вызывается</summary>
         public List<MC_NodeEventModule> nodesForEvents = new List<MC_NodeEventModule>();

@@ -19,11 +19,14 @@ public class MC_WindowVarible : MonoBehaviour
     public Transform labelBy_Event;
     public Transform labelBy_Input;
     public Transform labelBy_Custom;
+    public Transform labelBy_Saved;
     public Transform container;
 
     [Header("Btns")]
     public Button btnAddInput;
     public Button btnAddCustom;
+    public Button btnAddSave;
+
 
 
     [Header("Prefabs")]
@@ -56,6 +59,7 @@ public class MC_WindowVarible : MonoBehaviour
         dicList.Add(argument, go);
 
         if (linkType == MC_Value_LinkType._event) go.transform.SetSiblingIndex(labelBy_Event.GetSiblingIndex() + 1);
+        if (linkType == MC_Value_LinkType._save) go.transform.SetSiblingIndex(labelBy_Saved.GetSiblingIndex() + 1);
         if (linkType == MC_Value_LinkType._custom) go.transform.SetSiblingIndex(labelBy_Custom.GetSiblingIndex() + 1);
         if (linkType == MC_Value_LinkType._input) go.transform.SetSiblingIndex(labelBy_Input.GetSiblingIndex() + 1);
         
@@ -63,6 +67,17 @@ public class MC_WindowVarible : MonoBehaviour
         StartCoroutine(container.GetComponent<VerticalLayoutGroup>().ChangeUpdate());
     }
 
+    
+    void CreateSavedVarible()
+    {
+        
+        MC_Argument _arg = new MC_Argument();
+        _arg.name = "Save_" + codeScript.mC_BaseInstance.argumentsSave.Count;
+        _arg.myType = MC_ArgumentTypeEnum._string;
+
+        codeScript.mC_BaseInstance.argumentsSave.Add(_arg);
+        codeScript.Render();
+    }
     
     void CreateCutomVarible()
     {
@@ -89,6 +104,7 @@ public class MC_WindowVarible : MonoBehaviour
     {
         btnAddInput.onClick.AddListener(CreateInputVarible);
         btnAddCustom.onClick.AddListener(CreateCutomVarible);
+        btnAddSave.onClick.AddListener(CreateSavedVarible);
     }
 
     // Update is called once per frame

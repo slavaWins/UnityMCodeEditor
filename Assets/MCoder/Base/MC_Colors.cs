@@ -29,6 +29,7 @@ namespace MCoder
             if (linkType == MC_Value_LinkType._event) col = new Color32(31, 80, 206, 255);
             if (linkType == MC_Value_LinkType._input) col = new Color32(31, 80, 206, 255);
             if (linkType == MC_Value_LinkType._custom) col = new Color32(31, 80, 206, 255);
+            if (linkType == MC_Value_LinkType._save) col = new Color32(91, 110, 176, 255);
 
             return col;
         }

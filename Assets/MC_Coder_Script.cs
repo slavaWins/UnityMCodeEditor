@@ -60,7 +60,15 @@ namespace MCoder.UI
 
         internal void EventSelect(int Line)
         {
+
             ReadInputs();
+
+            if (mC_BaseInstance.nodesForEvents.Count - 1 < Line)
+            {
+                Debug.Log("события без ренедера!!!!");
+                Render();
+                return;
+            }
             currentEventNumber = Line;
             Render();
 
@@ -143,10 +151,9 @@ namespace MCoder.UI
         }
         */
 
-        public void SaveFromToNode()
-        {
+     
 
-        }
+
         internal void ReadInputs()
         {
             for (int i = 0; i < container.childCount; i++)
@@ -189,6 +196,13 @@ namespace MCoder.UI
             }
 
             L = -1;
+            foreach (MC_Argument lgn in mC_BaseInstance.argumentsSave)
+            {
+                L++;
+                windowVarible.AddVarible(L, lgn, MC_Value_LinkType._save, true);
+            }
+
+            L = -1;
             foreach (MC_Argument lgn in mC_BaseInstance.argumentsCustoms)
             {
                 L++;
@@ -207,11 +221,15 @@ namespace MCoder.UI
         public void Render()
         {
 
-       
 
-            // Debug.Log("==Render");
-            // ReadInputs();
-            SEditor.FormBuilder.ClearAllChildren(container);
+            if (mC_BaseInstance.nodesForEvents.Count-1< currentEventNumber)
+            {
+                currentEventNumber = mC_BaseInstance.nodesForEvents.Count - 1;
+            }
+
+                // Debug.Log("==Render");
+                // ReadInputs();
+                SEditor.FormBuilder.ClearAllChildren(container);
 
             int padding = 0;
 
@@ -230,30 +248,33 @@ namespace MCoder.UI
                 }
             }
 
-            int L = -1;
-            foreach (MC_BaseNodeElement lgn in mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes)
+            if (currentEventNumber != -1)
             {
-                L++;
-
-                NodeCodeLineElement go = Instantiate(elementPrefab.gameObject, container).GetComponent<NodeCodeLineElement>();
-                go.lineNumber = L;
-                go.nodeClass = lgn;
-                go.callbackPanel = this;
-
-                if (lgn.isType_END()) padding -= 1;
-                go.SetPadding(padding);
-                go.Render();
-
-                if (L == showwErrorInLine)
+                int L = -1;
+                foreach (MC_BaseNodeElement lgn in mC_BaseInstance.nodesForEvents[currentEventNumber].logicnodes)
                 {
-                    go.SetVisibleError(true);
-                    go.SetVisibleErrorInArgument(true, error.agrumentNumber);
+                    L++;
+
+                    NodeCodeLineElement go = Instantiate(elementPrefab.gameObject, container).GetComponent<NodeCodeLineElement>();
+                    go.lineNumber = L;
+                    go.nodeClass = lgn;
+                    go.callbackPanel = this;
+
+                    if (lgn.isType_END()) padding -= 1;
+                    go.SetPadding(padding);
+                    go.Render();
+
+                    if (L == showwErrorInLine)
+                    {
+                        go.SetVisibleError(true);
+                        go.SetVisibleErrorInArgument(true, error.agrumentNumber);
+
+                    }
+
+                    if (lgn.isType_IF()) padding += 1;
+
 
                 }
-
-                if (lgn.isType_IF()) padding += 1;
-
-
             }
             RenderVaribles();
             windowsEvent.HideAllError();
@@ -314,10 +335,19 @@ namespace MCoder.UI
             Render();
         }
 
+        public void OnLoadFile()
+        {  
+            windowsEvent.Render();
+            windowLibart.SetBodyType(mC_BaseInstance.bodyType);
+            Render();
+
+        }
         private void LoadFile()
         {
             winSave.gameObject.SetActive(true);
         }
+
+
         private void SaveFile()
         {
             UMC_StorageScripts.SaveScript(inpName.text, MCoderExport.GetData(mC_BaseInstance));

@@ -48,6 +48,14 @@ namespace MCoder
                         descr = "Мы можем завести свои собственные переменные, что бы хранить в них данные",
                     };
                     break;
+
+                case MC_Value_LinkType._save:
+
+                    return new MC_DocHelpData()
+                    {
+                        descr = "Сохраняемая переменная. Предмет или блок будут сохранять это между перезапусками серевера",
+                    };
+                    break;
                 default: return new MC_DocHelpData()
                 {
                     descr = "Не определенно"
